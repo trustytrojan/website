@@ -13,7 +13,7 @@ const PORT_MAP = {
 // to serve the homepage
 app.use(express.static("public"));
 
-app.get("/", (req, res) => {
+app.get("*", (req, res) => {
 	/** @type {string} */
 	// remove duplicate slashes between path components
 	const path = req.url.replaceAll(/\/\/+/g, "/");
