@@ -16,9 +16,9 @@ app.get("*", (req, res) => {
 	/** @type {string} */
 	// remove duplicate slashes between path components
 	let path = req.url.replaceAll(/\/\/+/g, "/");
-	if (!path.endsWith("/"))
-		path += "/";
-	const secondSlashIndex = path.indexOf("/", 1);
+	let secondSlashIndex = path.indexOf("/", 1);
+	if (!secondSlashIndex)
+		secondSlashIndex = path.length;
 	const firstComponent = path.substring(1, secondSlashIndex);
 	const rest = path.substring(secondSlashIndex);
 	const port = PORT_MAP[firstComponent];
