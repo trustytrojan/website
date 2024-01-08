@@ -15,13 +15,12 @@ app.use(express.static("public"));
 app.get("*", (req, res) => {
 	/** @type {string} */
 	// remove duplicate slashes between path components
-	const path = req.url.replaceAll(/\/\/+/g, "/");
-	console.log(path);
-	const secondSlash = path.indexOf("/", 1);
-	const firstComponent = path.substring(1, secondSlash);
-	console.log(firstComponent);
-	let rest = path.substring(secondSlash);
-	if (!rest) rest = "/";
+	let path = req.url.replaceAll(/\/\/+/g, "/");
+	if (!path.endsWith("/"))
+		path += "/";
+	const secondSlashIndex = path.indexOf("/", 1);
+	const firstComponent = path.substring(1, secondSlashIndex);
+	const rest = path.substring(secondSlashIndex);
 	console.log(rest);
 	const port = PORT_MAP[firstComponent];
 	console.log(port);
