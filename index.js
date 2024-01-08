@@ -2,6 +2,7 @@ import express from "express";
 import https from "https";
 import http from "http";
 import fs from "fs";
+import httpProxy from "http-proxy";
 
 const app = express();
 
@@ -10,7 +11,24 @@ const PORT_MAP = {
 	chat: 7000
 };
 
+https.createServer({
+	
+}, (req, res) => {
+
+});
+
 app.use(express.static("public"));
+
+const getPortFromPath = (path) => {
+	path = path.replaceAll(/\/\/+/g, "/");
+	let secondSlashIndex = path.indexOf("/", 1);
+	if (secondSlashIndex === -1)
+		secondSlashIndex = path.length;
+	const firstComponent = path.substring(1, secondSlashIndex);
+	const rest = path.substring(secondSlashIndex);
+	const port = PORT_MAP[firstComponent];
+	return [firstComponent, rest, port];
+};
 
 app.get("*", (req, res) => {
 	/** @type {string} */
