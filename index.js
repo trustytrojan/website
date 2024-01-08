@@ -21,13 +21,11 @@ app.get("*", (req, res) => {
 	const secondSlashIndex = path.indexOf("/", 1);
 	const firstComponent = path.substring(1, secondSlashIndex);
 	const rest = path.substring(secondSlashIndex);
-	console.log(rest);
 	const port = PORT_MAP[firstComponent];
-	console.log(port);
 	if (!port)
 		res.sendFile("index.html");
-	else
-		http.request({
+	else {
+		const proxyReq = http.request({
 			hostname: "localhost",
 			port: port,
 			path: rest,
@@ -37,6 +35,9 @@ app.get("*", (req, res) => {
 			res.writeHead(proxyRes.statusCode, proxyRes.headers);
 			proxyRes.pipe(res);
 		});
+		req.pipe(proxyReq);
+		proxyReq.end();
+	}
 });
 
 const server = https.createServer({
