@@ -41,4 +41,4 @@ const server = https.createServer({
 	cert: fs.readFileSync("/etc/letsencrypt/live/trustytrojan.dev/fullchain.pem"),
 }, app);
 
-server.listen(443);
+server.listen(443, () => console.log("trustytrojan.dev: listening on port 443"));
