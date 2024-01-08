@@ -10,7 +10,6 @@ const PORT_MAP = {
 	chat: 7000
 };
 
-// to serve the homepage
 app.use(express.static("public"));
 
 app.get("*", (req, res) => {
@@ -21,6 +20,7 @@ app.get("*", (req, res) => {
 	const firstComponent = path.substring(0, secondSlash);
 	const rest = path.substring(secondSlash);
 	const port = PORT_MAP[firstComponent];
+	console.log(firstComponent, port);
 	if (!port)
 		res.sendFile("index.html");
 	else
