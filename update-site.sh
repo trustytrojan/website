@@ -1,1 +1,0 @@
-ssh linode "cd /var/www/website && git pull && systemctl restart nginx"
