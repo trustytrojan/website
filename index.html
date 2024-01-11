@@ -2,39 +2,8 @@
 <html>
 
 <head>
-	<style>
-		@font-face {
-			font-family: "Iosevka";
-			src: url("Iosevka.woff2") format("woff2");
-		}
-
-		body {
-			background-color: #2e2e2e;
-			color: lightgray;
-			font-family: "Iosevka", monospace;
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-		}
-
-		body>*:not(:last-child) {
-			margin-bottom: 20px;
-		}
-
-		.link-button {
-			padding: 15px;
-			border-radius: 10px;
-			border: 2px solid gray;
-			text-decoration: none;
-			color: inherit;
-		}
-
-		.icon {
-			vertical-align: middle;
-			width: 20px;
-			height: 20px;
-		}
-	</style>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
@@ -49,30 +18,34 @@
 
 	<h2>profiles</h2>
 
-	<a href="https://github.com/trustytrojan" class="link-button">
-		<img src="https://github.githubassets.com/favicons/favicon-dark.svg" class="icon">
-		github
-	</a>
+	<div class="link-container">
+		<a href="https://github.com/trustytrojan" class="link-button">
+			<img src="https://github.githubassets.com/favicons/favicon-dark.svg" class="icon">
+			github
+		</a>
 
-	<a href="https://osu.ppy.sh/users/12625512" class="link-button">
-		<img src="https://osu.ppy.sh/images/favicon/favicon-32x32.png" class="icon">
-		osu!
-	</a>
+		<a href="https://osu.ppy.sh/users/12625512" class="link-button">
+			<img src="https://osu.ppy.sh/images/favicon/favicon-32x32.png" class="icon">
+			osu!
+		</a>
 
-	<a href="https://youtube.com/@trustytrojan" class="link-button">
-		<img src="https://youtube.com/s/desktop/375de707/img/favicon_32x32.png" class="icon">
-		youtube
-	</a>
+		<a href="https://youtube.com/@trustytrojan" class="link-button">
+			<img src="https://youtube.com/s/desktop/375de707/img/favicon_32x32.png" class="icon">
+			youtube
+		</a>
+	</div>
 
 	<h2>scripts</h2>
 
-	<a href="bashrc" class="link-button">
-		.bashrc
-	</a>
+	<div class="link-container">
+		<a href="bashrc" class="link-button">
+			.bashrc
+		</a>
 
-	<a href="archinstall" class="link-button">
-		archinstall.sh
-	</a>
+		<a href="archinstall" class="link-button">
+			archinstall.sh
+		</a>
+	</div>
 </body>
 
 </html>
