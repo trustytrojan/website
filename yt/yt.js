@@ -16,6 +16,7 @@ const createElement = (type, attributes, children) => {
 
 /** @type {HTMLVideoElement} */
 const player = document.getElementById('player');
+player.onresize = () => player.classList[document.fullscreenElement ? 'remove' : 'add']('tt-border')
 
 /** @type {HTMLDivElement} */
 const searchResults = document.getElementById('search-results');
@@ -31,7 +32,7 @@ const appendSearchResults = (items) => {
 		const thumbnail = createElement('img', { src: thumbnails ? thumbnails[0].url : null, className: 'sr-thumbnail' })
 		searchResults.append(
 			createElement('div', {
-				className: 'search-result',
+				className: 'search-result tt-clickable',
 				onclick: (ev) => {
 					if (ev.target !== ev.currentTarget)
 						return;

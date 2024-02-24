@@ -3,6 +3,13 @@
 	src: url("Iosevka.woff2") format("woff2");
 }
 
+.tt-home {
+	text-decoration: none;
+	padding: 5px;
+	border-radius: 10px;
+	transition: background-color 0.5s ease;
+}
+
 /* dark theme, but don't ruin the video player */
 :not(video) {
 	font-family: "Iosevka", monospace;
@@ -27,9 +34,17 @@
 }
 
 /* nice, contrasting, rounded border */
-.tt-border {
+.tt-border,
+.tt-clickable {
 	border-radius: 10px;
 	border: 2px solid gray;
+}
+
+/* remember: tt-clickable INHERITS from tt-border */
+
+.tt-clickable {
+	padding: 15px;
+	margin: 5px;
 }
 
 /* italicize buttons and input placeholder text */
@@ -40,7 +55,8 @@ input::placeholder {
 
 /* increase contrast between these elements and the body  */
 input,
-.tt-clickable:hover {
+.tt-clickable:hover,
+.tt-home:hover {
 	background-color: #434343;
 }
 

@@ -1,4 +1,8 @@
-/* combined with .tt-clickable */
+.tt-clickable {
+	font-size: 12pt;
+}
+
+/* combined with .tt-border */
 .search-result {
 	display: flex;
 	align-items: flex-start;
@@ -17,24 +21,25 @@
 	flex-basis: 50px;
 }
 
-/* simple <div> */
+/* simple <div> for video metadata */
+/* add contract to the whole <div> upon hover */
+/* inherits from tt-clickable */
 .sr-metadata {
 	display: flex;
 	flex-direction: column;
 	margin-left: 5px;
+	background-color: inherit;
+}
+.sr-metadata * {
+	background-color: inherit;
 }
 
-/* <div> containing video ids */
+/* <div> containing video id */
 .sr-id {
 	color: darkgray;
 }
 
-/*  */
-#player:not(:fullscreen) {
-	border-radius: 10px;
-	border: 2px solid gray;
-	/* aspect-ratio: 16 / 9; */
-	max-width: 50vw;
+#player {
 	max-height: 50vh;
 	margin: 5px;
 }
