@@ -45,6 +45,7 @@
 .tt-clickable {
 	padding: 10px;
 	margin: 5px;
+	transition: background-color 0.3s ease;
 }
 
 button,
