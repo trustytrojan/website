@@ -35,6 +35,14 @@ const hideInteractiveElements = () => {
 	leaveChatButton.hidden = true;
 };
 
+const appendMessage = (element) => {
+	const scrollWasAtBottom = messagesView.scrollHeight - messagesView.scrollTop === messagesView.clientHeight;
+	messagesView.append(element); // this changes scrollTop
+	if (scrollWasAtBottom)
+		// keep scroll at bottom
+		messagesView.scrollTop = messagesView.scrollHeight;
+};
+
 const showTypingLabel = () => typingLabel.style.opacity = 1;
 const hideTypingLabel = () => typingLabel.style.opacity = 0;
 
@@ -67,21 +75,21 @@ ws.onmessage = ({ data }) => {
 				usernameLabel.hidden = false;
 				usernameLabel.innerHTML = `Your username: <b>${username}</b>`;
 			}
-			messagesView.appendChild(createElement('div', {
+			appendMessage(createElement('div', {
 				className: 'tt-border join-msg',
 				innerHTML: `<b>${username}</b> has joined the chat`
 			}));
 			break;
 
 		case USER_MESSAGE:
-			messagesView.appendChild(createElement('div', {
+			appendMessage(createElement('div', {
 				className: 'tt-border user-msg',
 				innerHTML: `<b>${obj.sender}</b><div>${obj.content}</div>`
 			}))
 			break;
 
 		case USER_LEAVE:
-			messagesView.appendChild(createElement('div', {
+			appendMessage(createElement('div', {
 				className: 'tt-border leave-msg',
 				innerHTML: `<b>${obj.username}</b> has left the chat`
 			}));
@@ -140,7 +148,7 @@ const messageInputKeyDown = () => {
 		clearTimeout(stopTypingTimeout);
 		sendMessage();
 		stopTyping();
-	} else {
+	} else if (event.key.length === 1) {
 		if (stopTypingTimeout)
 			clearTimeout(stopTypingTimeout);
 		else
