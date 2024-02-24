@@ -1,0 +1,51 @@
+@font-face {
+	font-family: "Iosevka";
+	src: url("Iosevka.woff2") format("woff2");
+}
+
+/* dark theme, but don't ruin the video player */
+:not(video) {
+	font-family: "Iosevka", monospace;
+	background-color: #2e2e2e;
+	color: lightgray;
+}
+
+/* simple vertical flow, elements centered on y-axis */
+/* avoids extra work for mobile! */
+.tt-vert-centered {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+/* horizontal flow that wraps on smaller screens (e.g. mobile) */
+.tt-horiz-wrap {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+/* nice, contrasting, rounded border */
+.tt-border {
+	border-radius: 10px;
+	border: 2px solid gray;
+}
+
+/* italicize buttons and input placeholder text */
+button,
+input::placeholder {
+	font-style: italic;
+}
+
+/* increase contrast between these elements and the body  */
+input,
+.tt-clickable:hover {
+	background-color: #434343;
+}
+
+/* get rid of the ugly outline when any element is focused */
+:focus {
+	outline: none;
+	box-shadow: none;
+}

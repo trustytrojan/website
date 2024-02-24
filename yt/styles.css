@@ -1,0 +1,44 @@
+/* combined with .tt-clickable */
+.search-result {
+	display: flex;
+	align-items: flex-start;
+	padding: 10px;
+	margin: 10px;
+}
+
+/* only applied on <img>s */
+.sr-thumbnail {
+	border-radius: 10px;
+	max-width: 50%;
+	max-height: 202px;
+	margin-right: 5px;
+	flex-flow: 0;
+	flex-shrink: 1;
+	flex-basis: 50px;
+}
+
+/* simple <div> */
+.sr-metadata {
+	display: flex;
+	flex-direction: column;
+	margin-left: 5px;
+}
+
+/* <div> containing video ids */
+.sr-id {
+	color: darkgray;
+}
+
+/*  */
+#player:not(:fullscreen) {
+	border-radius: 10px;
+	border: 2px solid gray;
+	/* aspect-ratio: 16 / 9; */
+	max-width: 50vw;
+	max-height: 50vh;
+	margin: 5px;
+}
+
+#sr-container {
+	display: none;
+}
