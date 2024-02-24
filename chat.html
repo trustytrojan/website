@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="res/shared.css">
+	<link rel="stylesheet" href="res/chat.css">
+</head>
+
+<body class="tt-vert-centered">
+	<h1 id="title"><a class="tt-home" href="/">trustytrojan.dev</a>/chat</h1>
+
+	<div class="tt-horiz">
+		<b id="username-label" hidden></b>
+		<button id="leave-chat-button" class="tt-clickable" onclick="leaveChat()">leave chat</button>
+	</div>
+
+	<div id="chat-container">
+		<div id="messages-view"></div>
+
+		<div id="typing-label">
+			<div id="typing-usernames"></div> is typing...
+		</div>
+
+		<input type="text" id="message-input" class="tt-clickable" placeholder="send a message"
+			onkeydown="messageInputKeyDown()">
+	</div>
+
+	<dialog id="start-form">
+		<i>enter a username: </i>
+		<input type="text" id="username-input" class="tt-clickable" onkeydown="if (event.key === 'Enter') joinChat()">
+		<button onclick="joinChat()" class="tt-clickable">join chat</button>
+		<br>
+		<div id="error-label" style="color: red;"></div>
+	</dialog>
+
+	<script src="res/shared.js"></script>
+	<script src="res/chat.js"></script>
+</body>
+
+</html>

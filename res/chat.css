@@ -1,0 +1,52 @@
+#chat-container {
+	display: flex;
+	flex-direction: column;
+	width: calc(100vw - 30px);
+	height: 80vh;
+}
+
+#messages-view {
+	overflow-y: auto;
+}
+
+/* messages */
+
+.user-msg {
+	display: flex;
+	flex-direction: column;
+	word-wrap: break-word;
+}
+
+.user-msg, .join-msg, .leave-msg {
+	padding: 10px;
+	margin: 5px;
+}
+
+.join-msg {
+	background-color: #2e2e66;
+}
+
+.leave-msg {
+	background-color: #662e2e;
+}
+
+.join-msg *, .leave-msg * {
+	background-color: inherit;
+}
+
+/* typing indicator */
+
+#typing-label {
+	display: none;
+	font-size: small;
+	color: gray;
+}
+
+#typing-usernames {
+	display: inline;
+}
+
+.typing-username {
+	font-style: bold;
+	color: lightgray;
+}

@@ -43,8 +43,13 @@
 /* remember: tt-clickable INHERITS from tt-border */
 
 .tt-clickable {
-	padding: 15px;
+	padding: 10px;
 	margin: 5px;
+}
+
+button,
+input {
+	font-size: 11pt;
 }
 
 /* italicize buttons and input placeholder text */
