@@ -35,8 +35,8 @@ const hideInteractiveElements = () => {
 	leaveChatButton.hidden = true;
 };
 
-const showTypingLabel = () => typingLabel.style.display = 'inline';
-const hideTypingLabel = () => typingLabel.style.display = 'none';
+const showTypingLabel = () => typingLabel.style.opacity = 1;
+const hideTypingLabel = () => typingLabel.style.opacity = 0;
 
 /////////////// websocket code
 

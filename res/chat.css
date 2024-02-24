@@ -1,12 +1,16 @@
 #chat-container {
 	display: flex;
-	flex-direction: column;
+	flex-direction: column-reverse;
 	width: calc(100vw - 30px);
-	height: 80vh;
+	height: 82vh;
 }
 
 #messages-view {
 	overflow-y: auto;
+}
+
+#message-input {
+	margin-top: 0;
 }
 
 /* messages */
@@ -37,7 +41,7 @@
 /* typing indicator */
 
 #typing-label {
-	display: none;
+	opacity: 0;
 	font-size: small;
 	color: gray;
 }
