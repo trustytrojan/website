@@ -21,7 +21,7 @@ const appendSearchResults = (items) => {
 					if (ev.target !== ev.currentTarget)
 						return;
 					yt.stream(id, title);
-					window.scrollTo({ top: 0, behavior: 'smooth' })
+					scrollTo({ top: 0, behavior: 'smooth' })
 				}
 			}, [
 				thumbnail,

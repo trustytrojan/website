@@ -1,7 +1,9 @@
 /**
- * @param {keyof HTMLElementTagNameMap} type
- * @param {HTMLElement | undefined} attributes
- * @param {HTMLElement[] | undefined} children
+ * @template {keyof HTMLElementTagNameMap} K
+ * @param {K} type
+ * @param {HTMLElement} [attributes]
+ * @param {HTMLElement[]} [children]
+ * @returns {HTMLElementTagNameMap[K]}
  */
 const createElement = (type, attributes, children) => {
 	const element = document.createElement(type);

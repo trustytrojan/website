@@ -1,3 +1,14 @@
+/**
+ * @typedef {object} UserMessage
+ * @prop {string} sender
+ * @prop {string} content
+ */
+
+/**
+ * @typedef {object} JoinLeaveMessage
+ * @prop {string} username
+ */
+
 /////////////// element code
 
 /** @type {HTMLDivElement} */
@@ -35,13 +46,38 @@ const hideInteractiveElements = () => {
 	leaveChatButton.hidden = true;
 };
 
-const appendMessage = (element) => {
-	const scrollWasAtBottom = messagesView.scrollHeight - messagesView.scrollTop === messagesView.clientHeight;
-	messagesView.append(element); // this changes scrollTop
-	if (scrollWasAtBottom)
-		// keep scroll at bottom
-		messagesView.scrollTop = messagesView.scrollHeight;
+usernameInput.placeholder = 'test build 5';
+
+/**
+ * @param {'user' | 'join' | 'leave'} type
+ * @param {string} innerHTML
+ */
+const appendMessage = (type, innerHTML) => {
+	const lastMessage = messagesView.lastElementChild;
+
+	/**
+	 * distance from the bottom of [`clientHeight`](https://developer.mozilla.org/en-US/docs/Web/API/Element/clientHeight)
+	 * to the bottom of [`scrollHeight`](https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollHeight)
+	 */
+	const scrollBottom = messagesView.scrollHeight - messagesView.scrollTop - messagesView.clientHeight;
+
+	const messageElement = createElement('div', { className: `tt-border ${type}-msg`, innerHTML });
+	messagesView.append(messageElement);
+	
+	// if the most recent message is visible
+	if (scrollBottom < lastMessage?.clientHeight)
+		// force the scroll to the bottom
+		messageElement.scrollIntoView();
 };
+
+/** @param {UserMessage} */
+const appendUserMessage = ({ sender, content }) => appendMessage('user', `<b>${sender}</b><div>${content}</div>`);
+
+/** @param {JoinLeaveMessage} */
+const appendJoinMessage = ({ username }) => appendMessage('join', `<b>${username}</b> has joined the chat`);
+
+/** @param {JoinLeaveMessage} */
+const appendLeaveMessage = ({ username }) => appendMessage('leave', `<b>${username}</b> has left the chat`);
 
 const showTypingLabel = () => typingLabel.style.opacity = 1;
 const hideTypingLabel = () => typingLabel.style.opacity = 0;
@@ -75,29 +111,20 @@ ws.onmessage = ({ data }) => {
 				usernameLabel.hidden = false;
 				usernameLabel.innerHTML = `Your username: <b>${username}</b>`;
 			}
-			appendMessage(createElement('div', {
-				className: 'tt-border join-msg',
-				innerHTML: `<b>${username}</b> has joined the chat`
-			}));
+			appendJoinMessage(obj);
 			break;
 
 		case USER_MESSAGE:
-			appendMessage(createElement('div', {
-				className: 'tt-border user-msg',
-				innerHTML: `<b>${obj.sender}</b><div>${obj.content}</div>`
-			}))
+			appendUserMessage(obj);
 			break;
 
 		case USER_LEAVE:
-			appendMessage(createElement('div', {
-				className: 'tt-border leave-msg',
-				innerHTML: `<b>${obj.username}</b> has left the chat`
-			}));
+			appendLeaveMessage(obj);
 			if (obj.username === username) {
 				ws.close(1000, 'left the chat');
 				hideInteractiveElements();
 				usernameLabel.hidden = true;
-				document.body.appendChild(createElement('b', { innerHTML: 'You have left the chat.' }))
+				document.body.appendChild(createElement('b', { innerHTML: 'You have left the chat.' }));
 			}
 			break;
 
@@ -110,7 +137,7 @@ ws.onmessage = ({ data }) => {
 				className: 'typing-username'
 			}));
 			break;
-		
+
 		case USER_STOPPED_TYPING:
 			const typingUsernameLabel = document.getElementById(`typing-${obj.username}`);
 			if (typingUsernameLabel)
@@ -143,12 +170,17 @@ const stopTyping = () => {
 	stopTypingTimeout = null;
 };
 
-const messageInputKeyDown = () => {
-	if (event.key === 'Enter') {
-		clearTimeout(stopTypingTimeout);
-		sendMessage();
+messageInput.onkeydown = ({ key }) => {
+	if (key !== 'Enter') return;
+	clearTimeout(stopTypingTimeout);
+	sendMessage();
+	stopTyping();
+};
+
+messageInput.oninput = ({ target: { value } }) => {
+	if (value === '') {
 		stopTyping();
-	} else if (event.key.length === 1) {
+	} else {
 		if (stopTypingTimeout)
 			clearTimeout(stopTypingTimeout);
 		else
