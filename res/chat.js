@@ -14,8 +14,23 @@
 /** @type {HTMLDivElement} */
 const chatContainer = document.getElementById('chat-container');
 
-/** @type {HTMLDivElement} */
+/** @type {HTMLDivElement & { scrollToBottom: (_: ScrollBehavior) => void, scrollBottom: readonly number }} */
 const messagesView = document.getElementById('messages-view');
+
+/** @param {ScrollBehavior} [behavior] */
+messagesView.scrollToBottom = function(behavior) {
+	this.scrollTo({ top: this.scrollHeight - this.clientHeight, behavior });
+};
+
+Object.defineProperty(messagesView, 'scrollBottom', {
+	/**
+	 * distance from the bottom of [`clientHeight`](https://developer.mozilla.org/en-US/docs/Web/API/Element/clientHeight)
+	 * to the bottom of [`scrollHeight`](https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollHeight)
+	 */
+	get: function() { return this.scrollHeight - this.scrollTop - this.clientHeight; }
+});
+
+const newMessageIndicator = document.getElementById('nm-indicator');
 
 /** @type {HTMLDialogElement} */
 const startDialog = document.getElementById('start-form');
@@ -46,28 +61,35 @@ const hideInteractiveElements = () => {
 	leaveChatButton.hidden = true;
 };
 
-usernameInput.placeholder = 'test build 5';
-
 /**
  * @param {'user' | 'join' | 'leave'} type
  * @param {string} innerHTML
  */
 const appendMessage = (type, innerHTML) => {
 	const lastMessage = messagesView.lastElementChild;
+	const oldScrollBottom = messagesView.scrollBottom;
 
-	/**
-	 * distance from the bottom of [`clientHeight`](https://developer.mozilla.org/en-US/docs/Web/API/Element/clientHeight)
-	 * to the bottom of [`scrollHeight`](https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollHeight)
-	 */
-	const scrollBottom = messagesView.scrollHeight - messagesView.scrollTop - messagesView.clientHeight;
+	const newMessage = createElement('div', { className: `tt-border ${type}-msg`, innerHTML });
+	messagesView.append(newMessage);
 
-	const messageElement = createElement('div', { className: `tt-border ${type}-msg`, innerHTML });
-	messagesView.append(messageElement);
+	if (messagesView.scrollHeight === messagesView.clientHeight)
+		// return here if messagesView is not yet scrollable
+		return;
 	
-	// if the most recent message is visible
-	if (scrollBottom < lastMessage?.clientHeight)
+	// if, before appending the new message, the most recent message was partially visible
+	if (oldScrollBottom < lastMessage?.clientHeight)
 		// force the scroll to the bottom
-		messageElement.scrollIntoView();
+		newMessage.scrollIntoView();
+	else
+		// show the new message indicator
+		newMessageIndicator.style.visibility = 'visible';
+};
+
+messagesView.onscrollend = () => {
+	// if the distance from the bottom of the scroll view to the bottom of messagesView is less than 10 pixels
+	if (messagesView.scrollBottom < 10)
+		// hide the new message indicator
+		newMessageIndicator.style.visibility = 'hidden';
 };
 
 /** @param {UserMessage} */
@@ -103,6 +125,7 @@ const ws = new WebSocket('wss://chat.trustytrojan.dev');
 ws.onopen = startDialog.showModal.bind(startDialog);
 
 ws.onmessage = ({ data }) => {
+	/** @type {UserMessage | JoinLeaveMessage} */
 	const obj = JSON.parse(data.toString());
 	switch (obj.type) {
 		case USER_JOIN:
@@ -116,6 +139,8 @@ ws.onmessage = ({ data }) => {
 
 		case USER_MESSAGE:
 			appendUserMessage(obj);
+			if (obj.sender === username)
+				messagesView.lastElementChild?.scrollIntoView();
 			break;
 
 		case USER_LEAVE:

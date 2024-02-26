@@ -1,12 +1,30 @@
 #chat-container {
 	display: flex;
-	flex-direction: column-reverse;
+	flex-direction: column;
 	width: calc(100vw - 30px);
-	height: 82vh;
+	/* max-height: 82vh; */
 }
 
-#messages-view {
-	overflow-y: auto;
+#msg-view-cont {
+	display: flex;
+	flex-direction: column-reverse;
+	height: 75vh;
+	/* max-height: 82vh; */
+}
+
+#nm-indicator {
+	position: absolute;
+	padding: 10px;
+	left: 0;
+	right: 0;
+	bottom: 17.5px;
+	margin: auto;
+	visibility: hidden;
+	border-radius: 100px;
+	background-color: #686868;
+	white-space: nowrap;
+	display: inline-block;
+	width: min-content;
 }
 
 #message-input {

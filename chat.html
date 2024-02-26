@@ -17,13 +17,16 @@
 	</div>
 
 	<div id="chat-container">
-		<div id="typing-label">
-			<div id="typing-usernames"></div> is typing...
+		<div id="msg-view-cont" style="position: relative">
+			<div id="messages-view" style="overflow-y: auto;"></div>
+			<i id="nm-indicator" onclick="messagesView.scrollToBottom('smooth')">↓ new messages</i>
 		</div>
 
 		<input type="text" id="message-input" class="tt-clickable" placeholder="send a message">
 
-		<div id="messages-view"></div>
+		<div id="typing-label">
+			<div id="typing-usernames"></div> is typing...
+		</div>
 	</div>
 
 	<dialog id="start-form">
