@@ -22,11 +22,8 @@
 }
 
 /* simple <div> for video metadata */
-/* add contract to the whole <div> upon hover */
-/* inherits from tt-clickable */
 .sr-metadata {
-	display: flex;
-	flex-direction: column;
+	flex-grow: 1;
 	margin-left: 5px;
 	background-color: inherit;
 }
@@ -36,7 +33,7 @@
 
 /* <div> containing video id */
 .sr-id {
-	color: darkgray;
+	color: #787878;
 }
 
 #player {
@@ -46,4 +43,11 @@
 
 #sr-container {
 	display: none;
+}
+
+.sr-btns * {
+	margin: 0;
+	margin-bottom: 5px;
+	width: 20px;
+	height: 20px;
 }

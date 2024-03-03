@@ -20,94 +20,96 @@ const getInitData = async (url) => {
 };
 
 /**
- * @typedef {'video' | 'channel' | 'playlist' | 'movie'} SearchResultType
+ * @typedef {object} Thumbnail
+ * @prop {string} url
+ * @prop {number} width
+ * @prop {number} height
  */
 
 /**
  * @typedef {object} SearchOptions
  * @prop {boolean} [withPlaylist]
- * @prop {number} [limit]
- * @prop {SearchResultType} [type]
+ * @prop {'video' | 'channel' | 'playlist' | 'movie'} [type]
  */
 
-const srTypeMap = {
-	video: 'AQ',
-	channel: 'Ag',
-	playlist: 'Aw',
-	movie: 'BA'
-};
-
-/**
- * @param {string} keyword 
- * @param {SearchOptions} 
- */
-export const search = async (keyword, { withPlaylist, limit, type } = {}) => {
-	let endpoint = `${baseUrl}/results?search_query=${keyword}`;
-	if (type) endpoint += `&sp=EgIQ${srTypeMap[type]}%3D%3D`;
-	const page = await getInitData(endpoint);
-	const { sectionListRenderer } = page.initdata.contents.twoColumnSearchResultsRenderer.primaryContents;
-
-	let continuation = null;
-	const results = [];
-
-	for (const content of sectionListRenderer.contents)
-		if (content.continuationItemRenderer)
-			continuation = content.continuationItemRenderer.continuationEndpoint.continuationCommand.token;
-		else if (content.itemSectionRenderer)
-			for (const item of content.itemSectionRenderer.contents)
-				if (VideoResult.canConstruct(item))
-					results.push(new VideoResult(item));
-				else if (ChannelResult.canConstruct(item))
-					results.push(new ChannelResult(item));
-				else if (withPlaylist && PlaylistResult.canConstruct(item))
-					results.push(new PlaylistResult(item));
-
-	return {
-		results: limit ? results.slice(0, limit) : results,
-		nextPage: {
-			token: page.apiToken,
-
-			// nextPage sends this object as the body
-			// YouTube expects this structure, do not touch
-			context: { context: page.context, continuation }
-		}
+export class Search {
+	static typeMapping = {
+		video: 'AQ',
+		channel: 'Ag',
+		playlist: 'Aw',
+		movie: 'BA'
 	};
-};
 
-/**
- * @typedef {object} NextPageOptions
- * @prop {boolean} [withPlaylist]
- * @prop {number} [limit]
- */
+	results = [];
+	#nextPage = { token: null, context: { context: null, continuation: null } };
 
-/**
- * @param nextPage 
- * @param {NextPageOptions} 
- */
-export const nextPage = async (nextPage, { withPlaylist, limit } = {}) => {
-	const url = `${baseUrl}/youtubei/v1/search?key=${nextPage.token}`;
-	const init = { method: 'POST', body: JSON.stringify(nextPage.context) };
-	const page = await fetch(url, init).then(r => r.json());
-	const conitems = page.onResponseReceivedCommands[0].appendContinuationItemsAction.continuationItems;
-	const results = [];
+	/**
+	 * @param {string} query 
+	 * @param {SearchOptions} options 
+	 */
+	constructor(query, options) {
+		this.query = query;
+		this.options = options;
+	}
 
-	for (const conitem of conitems)
-		if (conitem.continuationItemRenderer)
-			nextPage.context.continuationToken = conitem.continuationItemRenderer.continuationEndpoint.continuationCommand.token;
-		else if (conitem.itemSectionRenderer)
-			for (const item of conitem.itemSectionRenderer.contents)
-				if (VideoResult.canConstruct(item))
-					results.push(new VideoResult(item));
-				else if (ChannelResult.canConstruct(item))
-					results.push(new ChannelResult(item));
-				else if (withPlaylist && PlaylistResult.canConstruct(item))
-					results.push(new PlaylistResult(item));
+	/**
+	 * Should only be called once.
+	 * @returns The first page of search results. Appends the results to `this.results`.
+	 */
+	async getResults() {
+		let endpoint = `${baseUrl}/results?search_query=${this.query}`;
 
-	return {
-		results: limit ? results.slice(0, limit) : results,
-		nextPage
-	};
-};
+		if (this.options.type)
+			endpoint += `&sp=EgIQ${Search.typeMapping[this.options.type]}%3D%3D`;
+
+		const page = await getInitData(endpoint);
+		this.#nextPage.token = page.apiToken;
+		const { contents } = page.initdata.contents.twoColumnSearchResultsRenderer.primaryContents.sectionListRenderer;
+		const results = [];
+
+		for (const content of contents)
+			if (content.continuationItemRenderer)
+				this.#nextPage.token = content.continuationItemRenderer.continuationEndpoint.continuationCommand.token;
+			else if (content.itemSectionRenderer)
+				for (const item of content.itemSectionRenderer.contents)
+					if (VideoResult.canConstruct(item))
+						results.push(new VideoResult(item));
+					else if (ChannelResult.canConstruct(item))
+						results.push(new ChannelResult(item));
+					else if (this.options.withPlaylist && PlaylistResult.canConstruct(item))
+						results.push(new PlaylistResult(item));
+
+		this.results.push(...results);
+		return results;
+	}
+
+	/**
+	 * @returns The next page of results for this search query. Appends the new results to `this.results`.
+	 * @throws If `search()` hasn't been called. YouTube will return 403 because of missing context data.
+	 */
+	async getNextPage() {
+		const url = `${baseUrl}/youtubei/v1/search?key=${this.#nextPage.token}`;
+		const init = { method: 'POST', body: JSON.stringify(this.#nextPage.context) };
+		const page = await (await fetch(url, init)).json();
+		const conitems = page.onResponseReceivedCommands[0].appendContinuationItemsAction.continuationItems;
+		const results = [];
+
+		for (const conitem of conitems)
+			if (conitem.continuationItemRenderer)
+				this.#nextPage.context.continuation = conitem.continuationItemRenderer.continuationEndpoint.continuationCommand.token;
+			else if (conitem.itemSectionRenderer)
+				for (const item of conitem.itemSectionRenderer.contents)
+					if (VideoResult.canConstruct(item))
+						results.push(new VideoResult(item));
+					else if (ChannelResult.canConstruct(item))
+						results.push(new ChannelResult(item));
+					else if (this.options.withPlaylist && PlaylistResult.canConstruct(item))
+						results.push(new PlaylistResult(item));
+
+		this.results.push(...results);
+		return results;
+	}
+}
 
 export const getPlaylistData = async (playlistId, limit = 0) => {
 	const endpoint = await `${baseUrl}/playlist?list=${playlistId}`;
@@ -233,13 +235,21 @@ class VideoResult {
 		vr ??= pvr;
 		/** @type {string} */
 		this.id = vr.videoId;
+		/** @type {Thumbnail[]} */
 		this.thumbnails = vr.thumbnail.thumbnails;
 		/** @type {string} */
 		this.title = vr.title.runs[0].text;
 		/** @type {string} */
 		this.channelTitle = vr.ownerText?.runs ? vr.ownerText.runs[0].text : null;
-		this.length = vr.lengthText;
+		/** @type {string} */
+		this.length = vr.lengthText.simpleText;
 		this.live = VideoResult.isLive(vr);
+		this.viewsText = {
+			/** @type {string} */
+			short: vr.shortViewCountText.simpleText,
+			/** @type {string} */
+			long: vr.viewCountText.simpleText
+		};
 		Object.defineProperty(this, 'type', { writable: false });
 	}
 }

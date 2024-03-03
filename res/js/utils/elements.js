@@ -1,7 +1,7 @@
 /**
  * @template {keyof HTMLElementTagNameMap} K
  * @param {K} type
- * @param {HTMLElement} [attributes]
+ * @param {HTMLElementTagNameMap[K]} [attributes]
  * @param {HTMLElement[]} [children]
  * @returns {HTMLElementTagNameMap[K]}
  */
