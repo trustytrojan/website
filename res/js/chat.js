@@ -11,6 +11,11 @@
 
 /////////////// element code
 
+// remember: globalThis is window
+onresize = () => {
+	document.body.style.height = innerHeight + 'px';
+};
+
 /** @type {HTMLDivElement} */
 const chatContainer = document.getElementById('chat-container');
 
@@ -37,6 +42,9 @@ const startDialog = document.getElementById('start-form');
 
 /** @type {HTMLInputElement} */
 const usernameInput = document.getElementById('username-input');
+
+/** @type {HTMLInputElement} */
+const chatroomInput = document.getElementById('chatroom-input');
 
 /** @type {HTMLInputElement} */
 const messageInput = document.getElementById('message-input');
@@ -127,6 +135,7 @@ ws.onopen = startDialog.showModal.bind(startDialog);
 ws.onmessage = ({ data }) => {
 	/** @type {UserMessage | JoinLeaveMessage} */
 	const obj = JSON.parse(data.toString());
+
 	switch (obj.type) {
 		case USER_JOIN:
 			if (obj.username === username) {
@@ -139,7 +148,9 @@ ws.onmessage = ({ data }) => {
 
 		case USER_MESSAGE:
 			appendUserMessage(obj);
+			// if this user sent this message
 			if (obj.sender === username)
+				// move it into view no matter where their scroll is
 				messagesView.lastElementChild?.scrollIntoView();
 			break;
 
@@ -202,10 +213,12 @@ messageInput.onkeydown = ({ key }) => {
 	stopTyping();
 };
 
+crypto.randomUUID();
+
 messageInput.oninput = ({ target: { value } }) => {
-	if (value === '') {
+	if (!value) // input is empty
 		stopTyping();
-	} else {
+	else {
 		if (stopTypingTimeout)
 			clearTimeout(stopTypingTimeout);
 		else
@@ -216,7 +229,9 @@ messageInput.oninput = ({ target: { value } }) => {
 
 const joinChat = () => {
 	username = usernameInput.value;
+	chatroom = chatroomInput.value;
 	if (!username.trim()) { errorLabel.textContent = 'Error: username cannot be empty!'; return; }
+	if (!chatroom.trim()) chatroom = 'public';
 	sendChatData(USER_JOIN, { username });
 };
 

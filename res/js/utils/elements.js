@@ -5,7 +5,7 @@
  * @param {HTMLElement[]} [children]
  * @returns {HTMLElementTagNameMap[K]}
  */
-const createElement = (type, attributes, children) => {
+export const createElement = (type, attributes, children) => {
 	const element = document.createElement(type);
 	if (attributes)
 		for (const key in attributes)
