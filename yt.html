@@ -10,8 +10,7 @@
 <body class="tt-vert">
 	<h1 id="title"><a class="tt-home" href="/">trustytrojan.dev</a>/yt</h1>
 
-	<video id="player" class="tt-border" controls autoplay onended="document.title = ''"></video>
-	<audio id="audio-player" controls onended="document.title = ''"></audio>
+	<video id="player" class="tt-border" hidden controls autoplay onended="document.title = ''"></video>
 
 	<input type="text" id="yt-search" class="tt-clickable" placeholder="search youtube"
 		onkeypress="if (event.key === 'Enter') yt.search()">
@@ -27,8 +26,6 @@
 		import * as yt from './res/js/yt/yt.js';
 		window.yt = yt;
 	</script>
-
-	<script type="module" src="res/js/yt/testing.js"></script>
 </body>
 
 </html>
