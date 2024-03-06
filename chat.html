@@ -4,8 +4,8 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="res/shared.css">
-	<link rel="stylesheet" href="res/chat.css">
+	<link rel="stylesheet" href="res/css/shared.css">
+	<link rel="stylesheet" href="res/css/chat.css">
 </head>
 
 <body class="tt-vert">
@@ -13,7 +13,6 @@
 
 	<div id="chat-top" class="tt-horiz" hidden>
 		<b id="username-label"></b>
-		<button id="leave-chat-button" class="tt-clickable" onclick="leaveChat()">leave chat</button>
 	</div>
 
 	<div id="chat-container">
@@ -47,8 +46,7 @@
 		<div id="error-label" style="color: red;"></div>
 	</dialog>
 
-	<script src="res/shared.js"></script>
-	<script src="res/chat.js"></script>
+	<script type="module" src="res/js/chat/input.js"></script>
 </body>
 
 </html>
