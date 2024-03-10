@@ -78,9 +78,10 @@ input,
 
 /* tt styled table */
 
-/* this must wrap a <table> to give it rounded corners */
+/* this must wrap a <table> to give it rounded corners using tt-border */
 .table-wrapper {
 	overflow: hidden;
+	margin: 5px;
 }
 
 table {
