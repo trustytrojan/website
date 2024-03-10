@@ -1,0 +1,56 @@
+.format-drop {
+	border-radius: 10px;
+	border: 2px dashed gray;
+	padding: 10px;
+	margin: 5px;
+	color: gray;
+	position: relative;
+	text-align: center;
+}
+
+#everything-else {
+	display: none;
+}
+
+#format-selector > * {
+	margin: 30px;
+}
+
+#details-root {
+	display: flex;
+	align-items: flex-start;
+	padding: 10px;
+	margin: 10px;
+}
+
+#details-thumbnail {
+	border-radius: 10px;
+	max-width: 50%;
+	max-height: 202px;
+	margin-right: 5px;
+	flex-flow: 0;
+	flex-shrink: 1;
+	flex-basis: 50px;
+}
+
+#details-text {
+	flex-grow: 1;
+	background-color: inherit;
+}
+#details-text * {
+	background-color: inherit;
+}
+
+#details-id {
+	color: #787878;
+}
+
+#vf-h2, #af-h2 {
+	color: gray;
+	font-style: italic;
+	padding: 5px;
+}
+
+.cloned-row > :first-child {
+	
+}

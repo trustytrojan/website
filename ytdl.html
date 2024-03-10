@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="res/css/shared.css">
+	<link rel="stylesheet" href="res/css/ytdl.css">
+</head>
+
+<body class="tt-vert">
+	<h1 id="title"><a class="tt-home" href="/">trustytrojan.dev</a>/ytdl</h1>
+
+	<input type="text" id="yt-id-or-url" class="tt-clickable" placeholder="youtube video id/link"
+		onkeypress="if (event.key === 'Enter') getInfo()">
+
+	<div id="everything-else" class="tt-vert">
+		<div id="details-root" class="tt-border">
+			<img id="details-thumbnail">
+			<div id="details-text">
+				<b id="details-title"></b>
+				<div id="details-channel"></div>
+				<div id="details-views-length"></div>
+				<div id="details-id"></div>
+			</div>
+		</div>
+
+		<div class="tt-horiz">
+			<i id="video-format-drop" class="format-drop">video format</i>
+			<i id="audio-format-drop" class="format-drop">audio format</i>
+		</div>
+
+		<button id="dl-button" class="tt-clickable" onclick="ffmpegDl()" hidden>download!</button>
+
+		<div class="tt-border table-wrapper">
+			<table>
+				<thead>
+					<tr>
+						<th>type</th>
+						<th>quality</th>
+						<th>codec(s)</th>
+						<th>bitrate</th>
+					</tr>
+				</thead>
+				<tbody id="table-body">
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<script type="module">
+		import { getInfo, ffmpegDl } from './res/js/ytdl/ytdl.js';
+		window.getInfo = getInfo;
+		window.ffmpegDl = ffmpegDl;
+	</script>
+</body>
+
+</html>

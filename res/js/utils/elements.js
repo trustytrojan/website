@@ -9,7 +9,13 @@ export const createElement = (type, attributes, children) => {
 	const element = document.createElement(type);
 	if (attributes)
 		for (const key in attributes)
-			element[key] = attributes[key];
+			switch (key) {
+				case 'dataset':
+					Object.assign(element.dataset, attributes.dataset);
+					break;
+				default:
+					element[key] = attributes[key];
+			}
 	if (children)
 		for (const child of children)
 			element.append(child);

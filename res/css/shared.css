@@ -59,6 +59,10 @@ input::placeholder {
 	font-style: italic;
 }
 
+/* input::placeholder {
+	text-align: center;
+} */
+
 /* increase contrast between these elements and the body  */
 input,
 .tt-clickable:hover,
@@ -70,4 +74,43 @@ input,
 :focus {
 	outline: none;
 	box-shadow: none;
+}
+
+/* tt styled table */
+
+/* this must wrap a <table> to give it rounded corners */
+.table-wrapper {
+	overflow: hidden;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+thead * {
+	background-color: #434343;
+}
+
+td, th {
+	border: 1px solid gray;
+	padding: 10px;
+	text-align: center;
+}
+
+/* everything below avoids border-clashing */
+
+tr > :first-child {
+	border-left: none;
+}
+
+tr > :last-child {
+	border-right: none;
+}
+
+tr:first-child > * {
+	border-top: none;
+}
+
+tbody > tr:last-child > * {
+	border-bottom: none;
 }
