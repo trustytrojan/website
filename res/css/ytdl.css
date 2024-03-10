@@ -4,8 +4,12 @@
 	padding: 10px;
 	margin: 5px;
 	color: gray;
-	position: relative;
 	text-align: center;
+	font-style: italic;
+}
+
+.format-drop * {
+	font-style: normal;
 }
 
 #everything-else {
@@ -49,8 +53,4 @@
 	color: gray;
 	font-style: italic;
 	padding: 5px;
-}
-
-.cloned-row > :first-child {
-	
 }

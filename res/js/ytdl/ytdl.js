@@ -18,6 +18,7 @@ const createTableRow = (format, details) => {
 		},
 		ondragstart: (ev) => ev.dataTransfer.setData('id', id)
 	}, [
+		createElement('td', { innerHTML: format.itag }),
 		createElement('td', { innerHTML: typeStr(format) }),
 		createElement('td', { innerHTML: format.hasVideo ? format.qualityLabel : format.audioQuality.split('_')[2].toLowerCase() }),
 		createElement('td', { innerHTML: format.codecs }),
@@ -55,9 +56,9 @@ export const ffmpegDl = async () => {
 	const itags = [
 		els.videoFormatDrop.firstElementChild?.dataset.itag,
 		els.audioFormatDrop.firstElementChild?.dataset.itag
-	].filter(x => x).map(x => `itags=${x}`).join('&');
+	].filter(x => x).join(',');
 	createElement('a', {
-		href: `${baseUrl}/yt/dl/${videoId}?${itags}`,
-		download: `${_details.title} - ${_details.ownerChannelName}.mkv`
+		href: `${baseUrl}/yt/dl/${videoId}?itags=${itags}`,
+		// download: `${_details.title} - ${_details.ownerChannelName}.mkv`
 	}).click();
 };

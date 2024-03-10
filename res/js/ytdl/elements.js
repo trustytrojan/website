@@ -1,5 +1,3 @@
-import { ffmpegDl } from './ytdl.js';
-
 let cloneCount = 0;
 
 /**
@@ -46,7 +44,6 @@ document.ondragover = (ev) => ev.preventDefault();
 document.ondrop = (ev) => {
 	ev.preventDefault();
 	const el = document.getElementById(ev.dataTransfer.getData('id'));
-	console.log(el.parentElement);
 	if (el.parentElement === tableBody) return;
 	el.remove();
 	if (!audioFormatDrop.childElementCount && !videoFormatDrop.childElementCount)

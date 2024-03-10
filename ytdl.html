@@ -24,9 +24,9 @@
 			</div>
 		</div>
 
-		<div class="tt-horiz">
-			<i id="video-format-drop" class="format-drop">video format</i>
-			<i id="audio-format-drop" class="format-drop">audio format</i>
+		<div class="tt-vert">
+			<div id="video-format-drop" class="format-drop">video format</div>
+			<div id="audio-format-drop" class="format-drop">audio format</div>
 		</div>
 
 		<button id="dl-button" class="tt-clickable" onclick="ffmpegDl()" hidden>download!</button>
@@ -35,6 +35,7 @@
 			<table>
 				<thead>
 					<tr>
+						<th>itag</th>
 						<th>type</th>
 						<th>quality</th>
 						<th>codec(s)</th>
