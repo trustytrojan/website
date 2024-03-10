@@ -27,8 +27,7 @@ const createTableRow = (format, details) => {
 	return el;
 }
 
-// const baseUrl = `https://api.trustytrojan.dev`;
-const baseUrl = `http://localhost:3000`;
+const baseUrl = `https://api.trustytrojan.dev`;
 let _details, videoId;
 
 export const getInfo = async () => {
