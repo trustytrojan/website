@@ -17,19 +17,29 @@ const extendFormat = (format) => {
 /** @type {Record<string, HTMLDivElement?>} */
 const selectedFormat = Object.preventExtensions({ audio: null, video: null, av: null });
 
+/**
+ * @param {HTMLElement} id 
+ */
+const itagFromId = ({ id }) => {
+	const split = id.split('-');
+	return split[split.length - 1];
+};
+
 const updateDlButton = () => {
 	const { audio, video, av } = selectedFormat;
 	if (av) {
 		els.dlButton.classList.remove('dl-btn-disabled');
-		els.dlButton.href = `${baseUrl}/yt/dl/${videoId}?itags=${av.id.split('-')[1]}`;
+		els.dlButton.href = `${baseUrl}/yt/dl/${videoId}?itags=${itagFromId(av)}`;
 	} else if (audio || video) {
+		const audioIdSplit = audio.id.split('-');
+		const videoIdSplit = 
 		els.dlButton.classList.remove('dl-btn-disabled');
 		if (audio && video)
-			els.dlButton.href = `${baseUrl}/yt/dl/${videoId}?itags=${audio.id.split('-')[1]},${video.id.split('-')[1]}`;
+			els.dlButton.href = `${baseUrl}/yt/dl/${videoId}?itags=${itagFromId(audio)},${itagFromId(video)}`;
 		else if (audio)
-			els.dlButton.href = `${baseUrl}/yt/dl/${videoId}?itags=${audio.id.split('-')[1]}`;
+			els.dlButton.href = `${baseUrl}/yt/dl/${videoId}?itags=${itagFromId(audio)}`;
 		else if (video)
-			els.dlButton.href = `${baseUrl}/yt/dl/${videoId}?itags=${video.id.split('-')[1]}`;
+			els.dlButton.href = `${baseUrl}/yt/dl/${videoId}?itags=${itagFromId(video)}`;
 	} else {
 		els.dlButton.classList.add('dl-btn-disabled');
 		els.dlButton.href = '';
