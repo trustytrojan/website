@@ -10,7 +10,7 @@
 	transition: background-color 0.5s ease;
 }
 
-/* dark theme, but don't ruin the video player */
+/* dark theme, ofc */
 * {
 	font-family: "Iosevka", monospace;
 	background-color: #2e2e2e;
@@ -22,8 +22,8 @@
 .tt-vert {
 	display: flex;
 	flex-direction: column;
-	align-items: center;
 	justify-content: center;
+	align-items: center;
 }
 
 /* horizontal flow that wraps on smaller screens (e.g. mobile) */
@@ -31,20 +31,27 @@
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
+	align-items: center;
 }
 
 /* nice, contrasting, rounded border */
 .tt-border,
-.tt-clickable {
+.tt-clickable,
+.tt-text {
 	border-radius: 10px;
 	border: 2px solid gray;
 }
 
-/* remember: tt-clickable INHERITS from tt-border */
-
-.tt-clickable {
+/* cozy padding & margin */
+.tt-clickable,
+.tt-text {
 	padding: 10px;
 	margin: 5px;
+}
+
+/* for elements that should be clicked */
+.tt-clickable,
+.tt-hover {
 	transition: background-color 0.3s ease;
 }
 
@@ -59,10 +66,6 @@ input::placeholder {
 	font-style: italic;
 }
 
-/* input::placeholder {
-	text-align: center;
-} */
-
 /* increase contrast between these elements and the body  */
 input,
 .tt-clickable:hover,
@@ -76,42 +79,14 @@ input,
 	box-shadow: none;
 }
 
-/* tt styled table */
-
-/* this must wrap a <table> to give it rounded corners using tt-border */
-.table-wrapper {
-	overflow: hidden;
-	margin: 5px;
+/* don't look like a link if there is no link */
+a[href=""] {
+	pointer-events: none;
+	cursor: default;
+	text-decoration: none;
 }
 
-table {
-	border-collapse: collapse;
-}
-
-thead * {
-	background-color: #434343;
-}
-
-td, th {
-	border: 1px solid gray;
-	padding: 10px;
-	text-align: center;
-}
-
-/* everything below avoids border-clashing */
-
-tr > :first-child {
-	border-left: none;
-}
-
-tr > :last-child {
-	border-right: none;
-}
-
-tr:first-child > * {
-	border-top: none;
-}
-
-tbody > tr:last-child > * {
-	border-bottom: none;
+/* generic text body */
+.tt-text {
+	border-color: #434343;
 }

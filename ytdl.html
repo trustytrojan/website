@@ -4,6 +4,7 @@
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="res/css/shared.css">
+	<link rel="stylesheet" href="res/css/table.css">
 	<link rel="stylesheet" href="res/css/ytdl.css">
 </head>
 
@@ -14,44 +15,85 @@
 		onkeypress="if (event.key === 'Enter') getInfo()">
 
 	<div id="everything-else" class="tt-vert">
-		<div id="details-root" class="tt-border">
+		<a id="details-root" class="tt-clickable" target="_blank">
 			<img id="details-thumbnail">
 			<div id="details-text">
 				<b id="details-title"></b>
 				<div id="details-channel"></div>
 				<div id="details-views-length"></div>
-				<div id="details-id"></div>
 			</div>
+		</a>
+
+		<a id="dl-button" class="tt-clickable">download!</a>
+
+		<div id="help-text" class="tt-text" style="text-align:center">
+			click or copy the download link above for the highest quality video with the highest quality audio!<br>
+			or mix and match audio/video qualities in the tables below:
 		</div>
 
-		<div class="tt-vert">
-			<div id="video-format-drop" class="format-drop">video format</div>
-			<div id="audio-format-drop" class="format-drop">audio format</div>
-		</div>
+		<div class="tt-horiz" style="align-items: flex-start">
+			<div class="tt-vert">
+				<h2 class="format-type-header">video</h2>
+				<div class="tt-border table-wrapper">
+					<table>
+						<thead>
+							<tr>
+								<th>itag</th>
+								<th>quality</th>
+								<th>codec</th>
+								<th>bitrate</th>
+							</tr>
+						</thead>
+						<tbody id="video-tb"></tbody>
+					</table>
+				</div>
+			</div>
 
-		<button id="dl-button" class="tt-clickable" onclick="ffmpegDl()" hidden>download!</button>
+			<div class="tt-vert">
+				<h2 class="format-type-header">audio</h2>
+				<div class="tt-border table-wrapper">
+					<table>
+						<thead>
+							<tr>
+								<th>itag</th>
+								<th>quality</th>
+								<th>codec</th>
+								<th>bitrate</th>
+							</tr>
+						</thead>
+						<tbody id="audio-tb"></tbody>
+					</table>
+				</div>
 
-		<div class="tt-border table-wrapper">
-			<table>
-				<thead>
-					<tr>
-						<th>itag</th>
-						<th>type</th>
-						<th>quality</th>
-						<th>codec(s)</th>
-						<th>bitrate</th>
-					</tr>
-				</thead>
-				<tbody id="table-body">
-				</tbody>
-			</table>
+				<h2 class="format-type-header">both</h2>
+				<div class="tt-border table-wrapper">
+					<table>
+						<thead>
+							<tr>
+								<th>itag</th>
+								<th>quality</th>
+								<th>codecs</th>
+								<th>bitrate</th>
+							</tr>
+						</thead>
+						<tbody id="av-tb"></tbody>
+					</table>
+				</div>
+			</div>
 		</div>
 	</div>
 
 	<script type="module">
-		import { getInfo, ffmpegDl } from './res/js/ytdl/ytdl.js';
+		import { getInfo } from './res/js/ytdl/ytdl.js';
+		import { ytIdOrUrl } from './res/js/ytdl/elements.js';
 		window.getInfo = getInfo;
-		window.ffmpegDl = ffmpegDl;
+
+		const params = new URLSearchParams(window.location.search);
+		const v = params.get('v');
+		if (v) {
+			ytIdOrUrl.value = v;
+			getInfo();
+		}
 	</script>
 </body>
 
