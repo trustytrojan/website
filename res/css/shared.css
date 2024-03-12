@@ -37,14 +37,16 @@
 /* nice, contrasting, rounded border */
 .tt-border,
 .tt-clickable,
-.tt-subtle-border {
+.tt-subtle-border,
+.tt-text {
 	border-radius: 10px;
 	border: 2px solid gray;
 }
 
 /* cozy padding & margin */
 .tt-clickable,
-.tt-subtle-border {
+.tt-cozy,
+.tt-text {
 	padding: 10px;
 	margin: 5px;
 }
@@ -90,9 +92,14 @@ a[href=""] {
 	cursor: default;
 }
 
-/* generic text body */
-.tt-subtle-border {
+.tt-subtle-border,
+.tt-text {
 	border-color: #434343;
+}
+
+.tt-text,
+details {
+	text-align: center;
 }
 
 /* small icon */
@@ -107,4 +114,8 @@ a[href=""] {
 .tt-subtle {
 	color: gray;
 	font-style: italic;
+}
+
+summary > * {
+	display: inline;
 }

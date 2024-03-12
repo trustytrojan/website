@@ -58,3 +58,13 @@ details > summary::before {
 h2 {
 	margin-bottom: 5px;
 }
+
+/* look even less clickable if there is no link */
+a[href=""] {
+	border: 2px dashed gray;
+	color: gray;
+}
+
+details[open] {
+	padding: 5px;
+}

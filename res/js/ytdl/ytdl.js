@@ -37,8 +37,9 @@ const updateDlButtonHref = () => {
 			if (video)
 				els.dlButton.href = `${baseHref}?itags=${itagFromId(video)}`;
 		}
-	} else
-		els.dlButton.href = baseHref;
+	} else {
+		els.dlButton.href = '';
+	}
 };
 
 const createTableRow = (
@@ -92,15 +93,18 @@ const createTableRow = (
 	return el;
 };
 
-const baseUrl = 'https://api.trustytrojan.dev';
+const baseUrl = 'http://localhost:3000'; //'https://api.trustytrojan.dev';
 
 export const getInfo = async () => {
 	const idOrUrl = els.ytIdOrUrl.value;
 	if (!idOrUrl.length) return;
 
+	els.loading.hidden = false;
+	els.everythingElse.style.display = 'none';
 	els.videoTb.replaceChildren();
 	els.audioTb.replaceChildren();
-	selectedFormat.av = null;
+	for (const k in selectedFormat)
+		selectedFormat[k] = null;
 
 	const url = `${baseUrl}/yt/info/${encodeURIComponent(idOrUrl)}`;
 	const { formats, details } = await (await fetch(url)).json();
@@ -117,7 +121,10 @@ export const getInfo = async () => {
 	}
 
 	baseHref = `${baseUrl}/yt/dl/${details.videoId}`;
-	updateDlButtonHref();
+	els.hqBtn.href = baseHref;
+	els.hqvBtn.href = baseHref + '?only=video';
+	els.hqaBtn.href = baseHref + '?only=audio';
 
-	document.getElementById('everything-else').style.display = 'flex';
+	els.everythingElse.style.display = 'flex';
+	els.loading.hidden = true;
 };

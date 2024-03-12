@@ -15,6 +15,8 @@
 
 	<input type="text" id="yt-id-or-url" class="tt-clickable" placeholder="youtube video id/link"
 		onkeypress="if (event.key === 'Enter') getInfo()">
+	
+	<div id="loading" class="tt-subtle" hidden>loading...</div>
 
 	<div id="everything-else" class="tt-vert">
 		<a id="details-root" class="tt-clickable" target="_blank">
@@ -26,21 +28,37 @@
 			</div>
 		</a>
 
-		<a id="dl-button" class="tt-clickable">download!</a>
+		<a id="hq-btn" class="tt-clickable">download!</a>
 
-		<div id="help-text" class="tt-subtle-border" style="text-align:center">
-			use download link above for the highest quality video!<br>
-			or mix and match audio/video qualities in the tables below.<br>
-		</div>
-
-		<details class="tt-subtle-border" style="text-align:center">
+		<details id="hq-btns" class="tt-text">
 			<summary>
-				<div class="tt-subtle" style="display:inline;font-size:13pt">customize</div>
+				<div class="tt-subtle">a/v only</div>
 			</summary>
 
-			<div id="help-text" class="tt-subtle-border" style="text-align:center">
-				left-click formats to select for download.<br>
-				right-click to copy links to streams from youtube.
+			<div class="tt-vert">
+				<a id="hqv-btn" class="tt-clickable">download video only</a>
+				<a id="hqa-btn" class="tt-clickable">download audio only</a>
+			</div>
+		</details>
+
+		<div id="help-text" class="tt-text">
+			use the links above for the highest quality audio/video!<br>
+			videos are provided in matroska (.mkv) format, and audio in mpeg-3 (.mp3).<br>
+			you can also mix and match audio/video qualities below.
+		</div>
+
+		<details class="tt-text">
+			<summary>
+				<div class="tt-subtle">customize</div>
+			</summary>
+
+			<div class="tt-vert">
+				<div id="help-text" class="tt-text">
+					left-click formats to select for download.<br>
+					right-click to copy links to streams from youtube.
+				</div>
+
+				<a id="dl-button" class="tt-clickable" href>download!</a>
 			</div>
 
 			<div class="tt-horiz" style="align-items: flex-start">

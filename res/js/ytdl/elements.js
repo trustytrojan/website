@@ -27,10 +27,26 @@ export const details = Object.freeze({
 });
 
 /** @type {HTMLAnchorElement} */
+export const hqBtn = document.getElementById('hq-btn');
+
+/** @type {HTMLAnchorElement} */
+export const hqvBtn = document.getElementById('hqv-btn');
+
+/** @type {HTMLAnchorElement} */
+export const hqaBtn = document.getElementById('hqa-btn');
+
+/** @type {HTMLAnchorElement} */
 export const dlButton = document.getElementById('dl-button');
 
 /** @type {HTMLDivElement} */
+export const everythingElse = document.getElementById('everything-else');
+
+/** @type {HTMLDivElement} */
 export const copiedPopup = document.getElementById('copied-popup');
+
+/** @type {HTMLDivElement} */
+export const loading = document.getElementById('loading');
+
 /**
  * @param {MouseEvent} ev 
  */
