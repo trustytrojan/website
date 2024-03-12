@@ -10,7 +10,7 @@
 	transition: background-color 0.5s ease;
 }
 
-/* dark theme, ofc */
+/* dark theme */
 * {
 	font-family: "Iosevka", monospace;
 	background-color: #2e2e2e;
@@ -37,14 +37,14 @@
 /* nice, contrasting, rounded border */
 .tt-border,
 .tt-clickable,
-.tt-text {
+.tt-subtle-border {
 	border-radius: 10px;
 	border: 2px solid gray;
 }
 
 /* cozy padding & margin */
 .tt-clickable,
-.tt-text {
+.tt-subtle-border {
 	padding: 10px;
 	margin: 5px;
 }
@@ -79,14 +79,32 @@ input,
 	box-shadow: none;
 }
 
+/* if an <a> is a tt-clickable, remove the underline */
+a.tt-clickable {
+	text-decoration: none;
+}
+
 /* don't look like a link if there is no link */
 a[href=""] {
 	pointer-events: none;
 	cursor: default;
-	text-decoration: none;
 }
 
 /* generic text body */
-.tt-text {
+.tt-subtle-border {
 	border-color: #434343;
+}
+
+/* small icon */
+.tt-icon {
+	vertical-align: middle;
+	width: 20px;
+	height: 20px;
+	background-color: inherit;
+}
+
+/* a subtler heading that doesn't hurt your eyes */
+.tt-subtle {
+	color: gray;
+	font-style: italic;
 }

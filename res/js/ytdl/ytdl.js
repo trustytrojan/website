@@ -1,8 +1,7 @@
 import { createElement } from '../utils/elements.js';
-import { max } from '../utils/arrays.js';
 import * as els from './elements.js';
 
-let videoId;
+let baseHref;
 
 const extendFormat = (format) => {
 	const bitrateKbps = format.hasVideo
@@ -18,41 +17,44 @@ const extendFormat = (format) => {
 const selectedFormat = Object.preventExtensions({ audio: null, video: null, av: null });
 
 /**
- * @param {HTMLElement} id 
+ * @param {HTMLElement} 
  */
 const itagFromId = ({ id }) => {
 	const split = id.split('-');
 	return split[split.length - 1];
 };
 
-const updateDlButton = () => {
+const updateDlButtonHref = () => {
 	const { audio, video, av } = selectedFormat;
-	if (av) {
-		els.dlButton.classList.remove('dl-btn-disabled');
-		els.dlButton.href = `${baseUrl}/yt/dl/${videoId}?itags=${itagFromId(av)}`;
-	} else if (audio || video) {
-		const audioIdSplit = audio.id.split('-');
-		const videoIdSplit = 
-		els.dlButton.classList.remove('dl-btn-disabled');
+	if (av)
+		els.dlButton.href = `${baseHref}?itags=${itagFromId(av)}`;
+	else if (audio || video) {
 		if (audio && video)
-			els.dlButton.href = `${baseUrl}/yt/dl/${videoId}?itags=${itagFromId(audio)},${itagFromId(video)}`;
-		else if (audio)
-			els.dlButton.href = `${baseUrl}/yt/dl/${videoId}?itags=${itagFromId(audio)}`;
-		else if (video)
-			els.dlButton.href = `${baseUrl}/yt/dl/${videoId}?itags=${itagFromId(video)}`;
-	} else {
-		els.dlButton.classList.add('dl-btn-disabled');
-		els.dlButton.href = '';
-	}
+			els.dlButton.href = `${baseHref}?itags=${itagFromId(audio)},${itagFromId(video)}`;
+		else {
+			if (audio)
+				els.dlButton.href = `${baseHref}?itags=${itagFromId(audio)}`;
+			if (video)
+				els.dlButton.href = `${baseHref}?itags=${itagFromId(video)}`;
+		}
+	} else
+		els.dlButton.href = baseHref;
 };
 
 const createTableRow = (
-	{ itag, type, codecs, hasVideo, bitrateKbpsText, qualityLabel, audioQuality },
+	{ itag, type, codecs, hasVideo, bitrateKbpsText, qualityLabel, audioQuality, url },
 	{ videoId }
 ) => {
 	const el = createElement('tr', {
 		className: 'tt-hover',
 		id: `${videoId}-${itag}`,
+
+		// easiest way to catch right-clicks
+		oncontextmenu: (ev) => {
+			ev.preventDefault();
+			navigator.clipboard.writeText(url).then(() => els.copiedPopup.showAt(ev));
+		},
+
 		onclick: () => {
 			// get references to currently selected formats
 			let { audio, video, av } = selectedFormat;
@@ -79,13 +81,13 @@ const createTableRow = (
 				selectedFormat[type] = el;
 			}
 
-			updateDlButton();
+			updateDlButtonHref();
 		},
 	}, [
-		createElement('td', { innerHTML: itag }),
-		createElement('td', { innerHTML: hasVideo ? qualityLabel : audioQuality.split('_')[2].toLowerCase() }),
-		createElement('td', { innerHTML: codecs }),
-		createElement('td', { innerHTML: bitrateKbpsText })
+		createElement('td', { innerText: itag }),
+		createElement('td', { innerText: hasVideo ? qualityLabel : audioQuality.split('_')[2].toLowerCase() }),
+		createElement('td', { innerText: (type === 'av') ? codecs.replace(', ', '\n') : codecs }),
+		createElement('td', { innerText: bitrateKbpsText })
 	]);
 	return el;
 };
@@ -103,8 +105,7 @@ export const getInfo = async () => {
 	const url = `${baseUrl}/yt/info/${encodeURIComponent(idOrUrl)}`;
 	const { formats, details } = await (await fetch(url)).json();
 
-	({ videoId } = details);
-	els.details.root.href = `https://youtu.be/${videoId}`;
+	els.details.root.href = `https://youtu.be/${details.videoId}`;
 	els.details.thumbnail.src = details.thumbnails[0].url;
 	els.details.title.innerHTML = details.title;
 	els.details.channel.innerHTML = details.ownerChannelName;
@@ -115,13 +116,8 @@ export const getInfo = async () => {
 		els[format.type + 'Tb'].append(createTableRow(format, details));
 	}
 
-	const highestVideo = document.getElementById(`${videoId}-${max(formats, format => format.bitrate).itag}`);
-	const highestAudio = document.getElementById(`${videoId}-${max(formats, format => format.audioBitrate).itag}`);
-	highestVideo.classList.add('selected-format');
-	highestAudio.classList.add('selected-format');
-	selectedFormat.audio = highestAudio;
-	selectedFormat.video = highestVideo;
-	updateDlButton();
+	baseHref = `${baseUrl}/yt/dl/${details.videoId}`;
+	updateDlButtonHref();
 
 	document.getElementById('everything-else').style.display = 'flex';
 };

@@ -28,3 +28,19 @@ export const details = Object.freeze({
 
 /** @type {HTMLAnchorElement} */
 export const dlButton = document.getElementById('dl-button');
+
+/** @type {HTMLDivElement} */
+export const copiedPopup = document.getElementById('copied-popup');
+/**
+ * @param {MouseEvent} ev 
+ */
+copiedPopup.showAt = function(ev) {
+	this.hidden = false;
+	this.style.left = ev.pageX + 'px';
+	this.style.top = ev.pageY + 'px';
+	this.classList.add('cp-animation');
+};
+copiedPopup.onanimationend = function() {
+	this.classList.remove('cp-animation');
+	this.hidden = true;
+};

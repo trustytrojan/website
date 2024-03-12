@@ -34,14 +34,27 @@
 	background-color: gray;
 }
 
-a[href=""] {
-	border: 2px dashed gray;
+#copied-popup {
+	position: absolute;
+	background-color: #111;
+	padding: 3px;
+	border-radius: 10px;
+	opacity: 0;
+}
+
+.cp-animation {
+	animation: fadeout 1.5s forwards;
+}
+
+@keyframes fadeout {
+	0% { opacity: 1 }
+	100% { opacity: 0; }
+}
+
+details > summary::before {
 	color: gray;
 }
 
-.format-type-header {
-	color: gray;
-	font-style: italic;
+h2 {
 	margin-bottom: 5px;
-	padding-bottom: 0;
 }

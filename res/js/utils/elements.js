@@ -13,6 +13,9 @@ export const createElement = (type, attributes, children) => {
 				case 'dataset':
 					Object.assign(element.dataset, attributes.dataset);
 					break;
+				case 'style':
+					Object.assign(element.style, attributes.style);
+					break;
 				default:
 					element[key] = attributes[key];
 			}

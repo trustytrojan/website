@@ -2,9 +2,11 @@
 <html>
 
 <head>
+	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="res/css/shared.css">
 	<link rel="stylesheet" href="res/css/table.css">
+	<link rel="stylesheet" href="res/css/details-triangle.css">
 	<link rel="stylesheet" href="res/css/ytdl.css">
 </head>
 
@@ -26,61 +28,74 @@
 
 		<a id="dl-button" class="tt-clickable">download!</a>
 
-		<div id="help-text" class="tt-text" style="text-align:center">
-			click or copy the download link above for the highest quality video with the highest quality audio!<br>
-			or mix and match audio/video qualities in the tables below:
+		<div id="help-text" class="tt-subtle-border" style="text-align:center">
+			use download link above for the highest quality video!<br>
+			or mix and match audio/video qualities in the tables below.<br>
 		</div>
 
-		<div class="tt-horiz" style="align-items: flex-start">
-			<div class="tt-vert">
-				<h2 class="format-type-header">video</h2>
-				<div class="tt-border table-wrapper">
-					<table>
-						<thead>
-							<tr>
-								<th>itag</th>
-								<th>quality</th>
-								<th>codec</th>
-								<th>bitrate</th>
-							</tr>
-						</thead>
-						<tbody id="video-tb"></tbody>
-					</table>
-				</div>
+		<details class="tt-subtle-border" style="text-align:center">
+			<summary>
+				<div class="tt-subtle" style="display:inline;font-size:13pt">customize</div>
+			</summary>
+
+			<div id="help-text" class="tt-subtle-border" style="text-align:center">
+				left-click formats to select for download.<br>
+				right-click to copy links to streams from youtube.
 			</div>
 
-			<div class="tt-vert">
-				<h2 class="format-type-header">audio</h2>
-				<div class="tt-border table-wrapper">
-					<table>
-						<thead>
-							<tr>
-								<th>itag</th>
-								<th>quality</th>
-								<th>codec</th>
-								<th>bitrate</th>
-							</tr>
-						</thead>
-						<tbody id="audio-tb"></tbody>
-					</table>
+			<div class="tt-horiz" style="align-items: flex-start">
+				<div id="copied-popup" hidden>copied link!</div>
+
+				<div class="tt-vert">
+					<h2 class="tt-subtle">video</h2>
+					<div class="tt-border table-wrapper">
+						<table>
+							<thead>
+								<tr>
+									<th>itag</th>
+									<th>quality</th>
+									<th>codec</th>
+									<th>bitrate</th>
+								</tr>
+							</thead>
+							<tbody id="video-tb"></tbody>
+						</table>
+					</div>
 				</div>
 
-				<h2 class="format-type-header">both</h2>
-				<div class="tt-border table-wrapper">
-					<table>
-						<thead>
-							<tr>
-								<th>itag</th>
-								<th>quality</th>
-								<th>codecs</th>
-								<th>bitrate</th>
-							</tr>
-						</thead>
-						<tbody id="av-tb"></tbody>
-					</table>
+				<div class="tt-vert">
+					<h2 class="tt-subtle">audio</h2>
+					<div class="tt-border table-wrapper">
+						<table>
+							<thead>
+								<tr>
+									<th>itag</th>
+									<th>quality</th>
+									<th>codec</th>
+									<th>bitrate</th>
+								</tr>
+							</thead>
+							<tbody id="audio-tb"></tbody>
+						</table>
+					</div>
+
+					<h2 class="tt-subtle">both</h2>
+					<div class="tt-border table-wrapper">
+						<table>
+							<thead>
+								<tr>
+									<th>itag</th>
+									<th>quality</th>
+									<th>codecs</th>
+									<th>bitrate</th>
+								</tr>
+							</thead>
+							<tbody id="av-tb"></tbody>
+						</table>
+					</div>
 				</div>
 			</div>
-		</div>
+		</details>
 	</div>
 
 	<script type="module">
