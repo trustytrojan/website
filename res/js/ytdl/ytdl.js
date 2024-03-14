@@ -118,7 +118,7 @@ const createTableRow = (
 	return el;
 };
 
-const baseUrl = 'http://localhost:3000'; //'https://api.trustytrojan.dev';
+const baseUrl = 'https://api.trustytrojan.dev';
 
 export const getInfo = async () => {
 	const idOrUrl = els.ytIdOrUrl.value;
