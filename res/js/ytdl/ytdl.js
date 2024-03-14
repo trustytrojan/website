@@ -3,6 +3,31 @@ import * as els from './elements.js';
 
 let baseHref;
 
+/**
+ * @param {string | number} seconds 
+ */
+const secondsToHms = (seconds) => {
+	if (seconds < 0)
+		throw TypeError('seconds must be nonnegative');
+	const h = Math.floor(seconds / 3600);
+	const m = Math.floor((seconds % 3600) / 60);
+	const s = seconds % 60;
+	const pad = (x) => String(x).padStart(2, '0');
+	return (h > 0)
+		? `${h}:${pad(m)}:${pad(s)}`
+		: `${m}:${pad(s)}`;
+};
+
+/**
+ * @param {string | number} n 
+ */
+const threeDigitAbbreviation = (n) => {
+	const abbreviations = ['', 'K', 'M', 'B', 'T'];
+	const suffixIndex = Math.floor(Math.log10(n) / 3);
+	const abbreviatedNumber = (n / Math.pow(1000, suffixIndex)).toFixed(0);
+	return abbreviatedNumber + abbreviations[suffixIndex];
+};
+
 const extendFormat = (format) => {
 	const bitrateKbps = format.hasVideo
 		? Math.round((format.averageBitrate || format.bitrate) / 1000)
@@ -93,7 +118,7 @@ const createTableRow = (
 	return el;
 };
 
-const baseUrl = 'https://api.trustytrojan.dev';
+const baseUrl = 'http://localhost:3000'; //'https://api.trustytrojan.dev';
 
 export const getInfo = async () => {
 	const idOrUrl = els.ytIdOrUrl.value;
@@ -113,7 +138,7 @@ export const getInfo = async () => {
 	els.details.thumbnail.src = details.thumbnails[0].url;
 	els.details.title.innerHTML = details.title;
 	els.details.channel.innerHTML = details.ownerChannelName;
-	els.details.viewsLength.innerHTML = `${details.viewCount} views • ${Math.floor(details.lengthSeconds / 60)}:${details.lengthSeconds % 60}`;
+	els.details.viewsLength.innerHTML = `${threeDigitAbbreviation(details.viewCount)} views • ${secondsToHms(details.lengthSeconds)}`;
 
 	for (const format of formats) {
 		extendFormat(format);
