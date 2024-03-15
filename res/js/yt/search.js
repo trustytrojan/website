@@ -1,5 +1,6 @@
 import { createElement } from '../utils/elements.js';
 import { searchResults, srLoading, ytSearchQuery } from './search-elements.js';
+import * as yts from '../youtube-search-api.js';
 
 const displaySearchResults = (results) => {
 	for (const { title, channel, lengthText, thumbnails, id, live, viewsText } of results)
@@ -32,14 +33,12 @@ const displaySearchResults = (results) => {
 		);
 };
 
-const baseUrl = 'https://api.trustytrojan.dev/yt';
 let nextPageCtx;
 
 export const search = async () => {
 	srLoading.hidden = false;
 	searchResults.replaceChildren();
-	const url = `${baseUrl}/search/?q=${encodeURIComponent(ytSearchQuery.value)}&type=video`;
-	const { results, nextPageCtx: npCtx } = await (await fetch(url)).json();
+	const { results, nextPageCtx: npCtx } = await yts.search(ytSearchQuery.value, 'video');
 	nextPageCtx = npCtx;
 	displaySearchResults(results);
 	document.getElementById('sr-container').style.display = 'flex';
@@ -47,13 +46,6 @@ export const search = async () => {
 };
 
 export const nextPage = async () => {
-	const url = baseUrl + '/search/nextpage';
-	const init = {
-		method: 'POST',
-		body: JSON.stringify(nextPageCtx),
-		headers: { 'Content-Type': 'application/json' }
-	};
-	const { results, nextPageCtx: npCtx } = await (await fetch(url, init)).json();
-	nextPageCtx = npCtx;
+	const results = await yts.nextPage(nextPageCtx);
 	displaySearchResults(results);
 };
