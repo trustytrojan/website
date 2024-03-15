@@ -1,5 +1,5 @@
 import { createElement } from '../utils/elements.js';
-import * as els from './elements.js';
+import * as els from './dl-elements.js';
 
 let baseHref;
 
@@ -72,7 +72,6 @@ const createTableRow = (
 	{ videoId }
 ) => {
 	const el = createElement('tr', {
-		className: 'tt-hover',
 		id: `${videoId}-${itag}`,
 
 		// easiest way to catch right-clicks

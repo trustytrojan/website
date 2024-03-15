@@ -4,14 +4,14 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="res/css/shared.css">
-	<link rel="stylesheet" href="res/css/table.css">
-	<link rel="stylesheet" href="res/css/details-triangle.css">
-	<link rel="stylesheet" href="res/css/ytdl.css">
+	<link rel="stylesheet" href="/res/css/shared.css">
+	<link rel="stylesheet" href="/res/css/table.css">
+	<link rel="stylesheet" href="/res/css/details-triangle.css">
+	<link rel="stylesheet" href="/res/css/yt/dl.css">
 </head>
 
 <body class="tt-vert">
-	<h1 id="title"><a class="tt-home" href="/">trustytrojan.dev</a>/ytdl</h1>
+	<h1 id="title"><a class="tt-home" href="/">trustytrojan.dev</a>/yt/dl</h1>
 
 	<input type="text" id="yt-id-or-url" class="tt-clickable" placeholder="youtube video id/link"
 		onkeypress="if (event.key === 'Enter') getInfo()">
@@ -117,8 +117,8 @@
 	</div>
 
 	<script type="module">
-		import { getInfo } from './res/js/ytdl/ytdl.js';
-		import { ytIdOrUrl } from './res/js/ytdl/elements.js';
+		import { getInfo } from '/res/js/yt/dl.js';
+		import { ytIdOrUrl } from '/res/js/yt/dl-elements.js';
 		window.getInfo = getInfo;
 
 		const params = new URLSearchParams(window.location.search);

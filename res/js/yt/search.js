@@ -1,11 +1,17 @@
 import { createElement } from '../utils/elements.js';
-import { player, searchResults, srLoading, ytSearch } from './elements.js';
+import { searchResults, srLoading, ytSearchQuery } from './search-elements.js';
 
 const displaySearchResults = (results) => {
 	for (const { title, channel, lengthText, thumbnails, id, live, viewsText } of results)
 		searchResults.append(
-			createElement('div', { className: 'search-result tt-border' }, [
-				createElement('img', { src: thumbnails ? thumbnails[0].url : null, className: 'sr-thumbnail' }),
+			createElement('div', {
+				className: 'search-result tt-border',
+				href: `https://youtu.be/${id}`
+			}, [
+				createElement('img', {
+					src: thumbnails ? thumbnails[0].url : null,
+					className: 'sr-thumbnail'
+				}),
 				createElement('div', { className: 'sr-metadata' }, [
 					createElement('b', { innerHTML: title }),
 					createElement('div', { innerHTML: channel.title }),
@@ -13,20 +19,14 @@ const displaySearchResults = (results) => {
 					createElement('div', { innerHTML: id, className: 'sr-id' }),
 				]),
 				createElement('div', { className: 'tt-vert sr-btns' }, [
-					createElement('img', {
-						src: 'res/img/play-icon.png',
+					createElement('a', {
 						className: 'tt-clickable',
-						onclick: () => {
-							player.src = baseUrl + `/stream/${encodeURIComponent(id)}`;
-							player.hidden = false;
-							document.title = title;
-						}
-					}),
-					createElement('img', {
-						src: 'res/img/download-icon.png',
+						href: `/yt/dl?v=${id}`
+					}, [createElement('img', { src: '/res/img/download-icon.png' })]),
+					createElement('a', {
 						className: 'tt-clickable',
-						onclick: () => createElement('a', { href: `${baseUrl}/stream/${id}?dl=1` }).click()
-					})
+						href: `https://youtu.be/${id}`
+					}, [createElement('img', { src: 'https://youtube.com/s/desktop/375de707/img/favicon_32x32.png' })])
 				])
 			])
 		);
@@ -38,9 +38,8 @@ let nextPageCtx;
 export const search = async () => {
 	srLoading.hidden = false;
 	searchResults.replaceChildren();
-	const query = encodeURIComponent(ytSearch.value);
-	const url = `${baseUrl}/search/${query}?type=video`;
-	const { results, nextPageCtx: npCtx } = await fetch(url).then(r => r.json());
+	const url = `${baseUrl}/search/?q=${encodeURIComponent(ytSearchQuery.value)}&type=video`;
+	const { results, nextPageCtx: npCtx } = await (await fetch(url)).json();
 	nextPageCtx = npCtx;
 	displaySearchResults(results);
 	document.getElementById('sr-container').style.display = 'flex';

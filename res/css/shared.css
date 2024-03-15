@@ -52,8 +52,7 @@
 }
 
 /* for elements that should be clicked */
-.tt-clickable,
-.tt-hover {
+.tt-clickable {
 	transition: background-color 0.3s ease;
 }
 

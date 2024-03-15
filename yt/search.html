@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="/res/css/shared.css">
+	<link rel="stylesheet" href="/res/css/yt/search.css">
+</head>
+
+<body class="tt-vert">
+	<h1 id="title"><a class="tt-home" href="/">trustytrojan.dev</a>/yt/search</h1>
+
+	<input type="text" id="yt-search" class="tt-clickable" placeholder="search youtube"
+		onkeypress="if (event.key === 'Enter') search()">
+
+	<i id="sr-loading" hidden>loading...</i>
+
+	<div id="sr-container" class="tt-vert" hidden>
+		<div id="search-results"></div>
+		<button onclick="nextPage()" class="tt-clickable">load more</button>
+	</div>
+
+	<script type="module">
+		import { ytSearchQuery } from '/res/js/yt/search-elements.js';
+		import { search, nextPage } from '/res/js/yt/search.js';
+		window.search = search;
+		window.nextPage = nextPage;
+
+		const params = new URLSearchParams(window.location.search);
+		const q = params.get('q');
+		if (q) {
+			ytSearchQuery.value = q;
+			search();
+		}
+	</script>
+</body>
+
+</html>
