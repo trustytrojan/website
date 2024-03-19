@@ -1,6 +1,6 @@
 import { createElement } from '../utils/elements.js';
 import { hideInteractiveElements, appendJoinMessage, appendLeaveMessage, appendUserMessage, typingLabel, typingUsernames, errorLabel,
-	usernameLabel, startDialog, messagesView } from './elements.js';
+	usernameLabel, startDialog } from './elements.js';
 
 const // object types for the JSON objects going through the WebSocket
 	USER_JOIN = 0,
@@ -13,10 +13,10 @@ const // object types for the JSON objects going through the WebSocket
 /** @type {string} */
 let username;
 
-/** @type {string} */
-let chatroom;
-
-const ws = new WebSocket('wss://chat.trustytrojan.dev');
+const ws = new WebSocket(
+	//'wss://chat.trustytrojan.dev'
+	'ws://localhost:3000'
+);
 
 ws.onopen = startDialog.showModal.bind(startDialog);
 
@@ -27,6 +27,7 @@ ws.onmessage = ({ data }) => {
 		case USER_JOIN:
 			if (obj.username === username) {
 				startDialog.close();
+				startDialog.style.display = 'none';
 				usernameLabel.hidden = false;
 				usernameLabel.innerHTML = `Your username: <b>${username}</b>`;
 			}
@@ -95,16 +96,15 @@ export const sendStoppedTyping = () => sendChatData(USER_STOPPED_TYPING);
  * @param {string} _username
  * @param {string} _chatroom
  */
-export const sendJoin = (_username, _chatroom) => {
+export const sendJoin = (_username) => {
 	username = _username;
-	chatroom = _chatroom;
-	sendChatData(USER_JOIN, { username, chatroom });
+	sendChatData(USER_JOIN, { username });
 };
 
 /**
  * @param {string} chatroom 
  */
-export const sendLeave = (chatroom) => sendChatData(USER_LEAVE, { username, chatroom });
+export const sendLeave = () => sendChatData(USER_LEAVE, { username });
 
 /**
  * @param {string} content

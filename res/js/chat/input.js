@@ -1,5 +1,5 @@
 import { sendJoin, sendMessage, sendStoppedTyping, sendTyping } from './ws.js';
-import { messageInput, usernameInput, chatroomInput } from './elements.js';
+import { messageInput, usernameInput } from './elements.js';
 
 /** @type {number} */
 let stopTypingTimeout;
@@ -19,7 +19,7 @@ messageInput.onkeydown = ({ key }) => {
 	if (!content.trim()) return;
 
 	// TODO: FIGURE THIS OUT
-	sendMessage(content, chatroom);
+	sendMessage(content);
 
 	stopTyping();
 };
@@ -38,9 +38,6 @@ messageInput.oninput = ({ target: { value } }) => {
 
 window.joinChat = () => {
 	const username = usernameInput.value;
-	let chatroom = chatroomInput.value;
 	if (!username.trim()) { errorLabel.textContent = 'Error: username cannot be empty!'; return; }
-	if (!chatroom.trim()) chatroom = 'public';
-	sendChatData(USER_JOIN, { username });
 	sendJoin(username);
 };

@@ -29,20 +29,10 @@
 	</div>
 
 	<dialog id="start-form" class="tt-border tt-vert" onkeydown="if (event.key === 'Enter') joinChat()">
-		<div class=" tt-horiz">
-			<i>username: </i>
-			<input type="text" id="username-input" class="tt-clickable">
-		</div>
-
 		<div class="tt-horiz">
-			<i>chatroom: </i>
-			<input type="text" id="chatroom-input" class="tt-clickable">
+			<input type="text" id="username-input" class="tt-clickable" placeholder="enter username">
+			<button onclick="joinChat()" class="tt-clickable">join chat</button>
 		</div>
-
-		<div class="tt-horiz">
-			<button onclick="joinChat()" class="tt-clickable" style="align-self: flex-end">join chat</button>
-		</div>
-
 		<div id="error-label" style="color: red;"></div>
 	</dialog>
 

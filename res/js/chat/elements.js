@@ -1,3 +1,5 @@
+import { createElement } from '../utils/elements.js';
+
 window.onresize = () => {
 	document.body.style.height = innerHeight + 'px';
 };
@@ -28,9 +30,6 @@ export const startDialog = document.getElementById('start-form');
 
 /** @type {HTMLInputElement} */
 export const usernameInput = document.getElementById('username-input');
-
-/** @type {HTMLInputElement} */
-export const chatroomInput = document.getElementById('chatroom-input');
 
 /** @type {HTMLInputElement} */
 export const messageInput = document.getElementById('message-input');
