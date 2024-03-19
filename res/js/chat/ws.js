@@ -13,10 +13,7 @@ const // object types for the JSON objects going through the WebSocket
 /** @type {string} */
 let username;
 
-const ws = new WebSocket(
-	//'wss://chat.trustytrojan.dev'
-	'ws://localhost:3000'
-);
+const ws = new WebSocket('wss://chat.trustytrojan.dev');
 
 ws.onopen = startDialog.showModal.bind(startDialog);
 
