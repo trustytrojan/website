@@ -157,12 +157,9 @@ export const getInfo = async () => {
 	els.audioTb.replaceChildren();
 	for (const k in selectedFormat)
 		selectedFormat[k] = null;
+	updateDlButton();
 
-	// const url = `${baseUrl}/yt/info/${encodeURIComponent(idOrUrl)}`;
-	// ({ formats, details } = await (await fetch(url)).json());
 	({ formats, videoDetails: details } = await ytdl.getInfo(idOrUrl));
-	// console.log(formats);
-	// return;
 
 	els.details.root.href = `https://youtu.be/${details.videoId}`;
 	els.details.thumbnail.src = details.thumbnails[0].url;
