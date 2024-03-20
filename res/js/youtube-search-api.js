@@ -1,10 +1,6 @@
 // code adapted from damonwonghv/youtube-search-api
 
-/**
- * @param {string} url 
- * @param {RequestInit} init 
- */
-const _fetch = (url, init) => fetch(`https://proxy.trustytrojan.dev/?uri=${encodeURIComponent(url)}`, init);
+import fetch from './proxy.js';
 
 const baseUrl = `https://www.youtube.com`;
 
@@ -13,7 +9,7 @@ const baseUrl = `https://www.youtube.com`;
  */
 const getInitData = async (url) => {
 	let apiToken, context;
-	const page = await (await _fetch(encodeURI(url))).text();
+	const page = await (await fetch(encodeURI(url))).text();
 	const ytInitData = page.split("var ytInitialData =");
 	if (ytInitData.length === 1)
 		throw new Error("ytInitialData not present in page");
@@ -88,7 +84,7 @@ export const search = async (query, type) => {
 export const nextPage = async (ctx) => {
 	const url = `${baseUrl}/youtubei/v1/search?key=${ctx.key}`;
 	const init = { method: 'POST', body: JSON.stringify(ctx.body) };
-	const page = await (await _fetch(url, init)).json();
+	const page = await (await fetch(url, init)).json();
 	if (!page.onResponseReceivedCommands?.[0]?.appendContinuationItemsAction)
 		throw 'no data received from youtube; did you send nextPageCtx?';
 	const { continuationItems } = page.onResponseReceivedCommands[0].appendContinuationItemsAction;
