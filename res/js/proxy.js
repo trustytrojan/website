@@ -1,4 +1,6 @@
-export const wrapUrl = (url) => `https://corsproxy.io/?${encodeURIComponent(url)}`;
+const baseUrl = 'https://proxy.trustytrojan.dev/?uri=';
+
+export const wrapUrl = (url) => `${baseUrl}${encodeURIComponent(url)}`;
 
 /**
  * @param {string} url 
