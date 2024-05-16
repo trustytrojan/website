@@ -118,3 +118,8 @@ details {
 summary > * {
 	display: inline;
 }
+
+ul.tt-list {
+	/* padding: 0; */
+	margin: 0;
+}
