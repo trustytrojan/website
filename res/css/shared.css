@@ -123,3 +123,8 @@ ul.tt-list {
 	/* padding: 0; */
 	margin: 0;
 }
+
+/* Hide the input element */
+input[type="file"] {
+	display: none;
+}
