@@ -3,7 +3,7 @@ import * as els from './dl-fw-elements.js';
 import ffmpegDl from './ffmpeg-dl.js';
 import { max } from '../utils/arrays.js';
 //import * as ytdl from '../ytdl-core/lib/info.js';
-import * as ytdl from 'https://github.com/trustytrojan/ytdl-core-browser/raw/main/lib/info.js';
+import * as ytdl from 'https://cdn.trustytrojan.dev/ytdl-core-browser/lib/info.js';
 
 // let baseHref;
 let formats, details;
