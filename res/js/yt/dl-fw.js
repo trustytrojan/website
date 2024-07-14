@@ -54,10 +54,10 @@ const itagFromId = ({ id }) => {
 
 const clearFfmpegOutput = () => {
 	els.ffmpegOutput.hidden = false;
-	els.ffmpegOutput.innerHTML = '';
+	els.ffmpegOutputCode.innerText = '';
 };
 
-const onLog = ({ message }) => els.ffmpegOutput.innerHTML += message;
+const onLog = ({ message }) => els.ffmpegOutputCode.innerHTML += (message + '\n');
 
 const updateDlButton = () => {
 	const { audio, video, av } = selectedFormat;
@@ -66,7 +66,7 @@ const updateDlButton = () => {
 		els.dlButton.onclick = () => {
 			clearFfmpegOutput();
 			const itag = itagFromId(av);
-			ffmpegDl(formats.filter(f => f.itag === itag), details, onLog);
+			ffmpegDl(formats.filter(f => f.itag == itag), details, onLog);
 		};
 	else if (audio || video) {
 		if (audio && video)
@@ -74,20 +74,25 @@ const updateDlButton = () => {
 				clearFfmpegOutput();
 				const audioItag = itagFromId(audio);
 				const videoItag = itagFromId(video);
-				ffmpegDl(formats.filter(f => f.itag === audioItag || f.itag === videoItag), details, onLog);
+				console.log(audio);
+				console.log(video);
+				console.log(audioItag);
+				console.log(videoItag);
+				console.log(formats);
+				ffmpegDl(formats.filter(f => f.itag == audioItag || f.itag == videoItag), details, onLog);
 			};
 		else {
 			if (audio)
 				els.dlButton.onclick = () => {
 					clearFfmpegOutput();
 					const audioItag = itagFromId(audio);
-					ffmpegDl(formats.filter(f => f.itag === audioItag), details, onLog);
+					ffmpegDl(formats.filter(f => f.itag == audioItag), details, onLog);
 				};
 			if (video)
 				els.dlButton.onclick = () => {
 					clearFfmpegOutput();
 					const videoItag = itagFromId(video);
-					ffmpegDl(formats.filter(f => f.itag === videoItag), details, onLog);
+					ffmpegDl(formats.filter(f => f.itag == videoItag), details, onLog);
 				};
 		}
 	} else

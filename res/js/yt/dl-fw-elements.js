@@ -47,8 +47,11 @@ export const copiedPopup = document.getElementById('copied-popup');
 /** @type {HTMLDivElement} */
 export const loading = document.getElementById('loading');
 
-/** @type {HTMLDivElement} */
+/** @type {HTMLDetailsElement} */
 export const ffmpegOutput = document.getElementById('ffmpeg-output');
+
+/** @type {HTMLElement} */
+export const ffmpegOutputCode = document.getElementById('ffmpeg-output-code');
 
 /**
  * @param {MouseEvent} ev 

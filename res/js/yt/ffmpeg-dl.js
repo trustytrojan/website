@@ -10,6 +10,7 @@ export default async (formats, details, onLog) => {
 	if (!ffmpeg) {
 		ffmpeg = new FFmpeg();
 		ffmpeg.on('log', onLog);
+		ffmpeg.on('progress', console.log);
 		ffmpegLoaded = false;
 	}
 
@@ -17,6 +18,8 @@ export default async (formats, details, onLog) => {
 		await ffmpeg.load({ coreURL: '/res/js/@ffmpeg/core-mt/package/dist/esm/ffmpeg-core.js' });
 		ffmpegLoaded = true;
 	}
+
+	console.log(formats);
 
 	const onlyOneAudio = (formats.length === 1) && (formats[0].type === 'audio');
 	const urls = formats.map(f => f.url);

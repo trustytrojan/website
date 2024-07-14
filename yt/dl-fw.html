@@ -20,7 +20,7 @@
 		to be disabled...<br>
 		you will need an extension like
 		<a href="https://chromewebstore.google.com/detail/cors-unblock/lfhmikememgdcahcdlaciloancbhjino">CORS Unblock</a>
-		for this page to work.
+		for this page to work. (don't worry... everything here is open-source)
 	</div>
 
 	<input type="text" id="yt-id-or-url" class="tt-clickable" placeholder="youtube video id/link"
@@ -38,7 +38,13 @@
 			</div>
 		</a>
 
-		<div id="ffmpeg-output" class="tt-text" style="color:gray" hidden></div>
+		<details id="ffmpeg-output" class="tt-text" hidden>
+			<summary>
+				<div class="tt-subtle">ffmpeg output</div>
+			</summary>
+
+			<div id="ffmpeg-output-code" style="white-space: pre; text-align: left"></code>
+		</details>
 
 		<button id="hq-btn" class="tt-clickable">download!</button>
 
@@ -54,9 +60,9 @@
 		</details>
 
 		<div id="help-text" class="tt-text">
-			use the links above for the highest quality audio/video!<br>
-			videos are provided in matroska (.mkv) format, and audio in mpeg-3 (.mp3).<br>
-			you can also mix and match audio/video qualities below.
+			use the buttons above for the highest quality audio/video!<br>
+			videos will be saved in mkv format; audio-only in mp3.<br>
+			you can also mix and match audio/video formats below.
 		</div>
 
 		<details class="tt-text">
