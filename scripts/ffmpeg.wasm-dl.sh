@@ -8,3 +8,4 @@ dl() {
 dl ffmpeg 0.12.10
 dl util 0.12.1
 dl core-mt 0.12.6
+unset dl

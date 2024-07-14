@@ -1,6 +1,6 @@
 import { createElement } from '../utils/elements.js';
-import { FFmpeg } from 'https://unpkg.com/@ffmpeg/ffmpeg/dist/esm/index.js';
-import { fetchFile } from 'https://unpkg.com/@ffmpeg/util/dist/esm/index.js';
+import { FFmpeg } from '../@ffmpeg/ffmpeg/package/dist/esm/index.js';
+import { fetchFile } from '../@ffmpeg/util/package/dist/esm/index.js';
 
 /** @type {FFmpeg} */
 let ffmpeg;
@@ -14,7 +14,7 @@ export default async (formats, details, onLog) => {
 	}
 
 	if (!ffmpegLoaded) {
-		await ffmpeg.load();
+		await ffmpeg.load({ coreURL: '/res/js/@ffmpeg/core-mt/package/dist/esm/ffmpeg-core.js' });
 		ffmpegLoaded = true;
 	}
 
@@ -23,10 +23,12 @@ export default async (formats, details, onLog) => {
 
 	let promises = [];
 	promises.push(fetchFile(urls[0]).then(f => ffmpeg.writeFile('f1', f)));
-	if (urls[1]) promises.push(fetchFile(urls[1]).then(f => ffmpeg.writeFile('f2', f)));
+	if (urls[1])
+		promises.push(fetchFile(urls[1]).then(f => ffmpeg.writeFile('f2', f)));
 	await Promise.all(promises);
 
 	await ffmpeg.exec([
+		'-hide_banner',
 		'-i', 'f1',
 		...(urls[1] ? ['-i', 'f2'] : []),
 		...(!onlyOneAudio ? ['-c', 'copy'] : []),

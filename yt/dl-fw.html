@@ -14,15 +14,18 @@
 	<h1 id="title"><a class="tt-home" href="/">trustytrojan.dev</a>/yt/dl-fw</h1>
 
 	<div class="tt-text">
-		this is <a href="/yt/dl">yt/dl</a> using <a href="https://ffmpegwasm.netlify.app/">ffmpeg.wasm</a> for adding metadata and muxing,<br>
-		and <a href="https://github.com/trustytrojan/ytdl-core">my dependency-free version of ytdl-core</a> for getting video info.<br>
+		this is a serverless version of <a href="/yt/dl">yt/dl</a>. it uses <a href="https://ffmpegwasm.netlify.app/">ffmpeg.wasm</a>
+		for muxing, and <a href="https://github.com/trustytrojan/ytdl-core">ytdl-core-browser</a> to scrape youtube.<br>
 		this eliminates the need for a backend, at the cost of requiring <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS">CORS</a>
-		to be disabled...
+		to be disabled...<br>
+		you will need an extension like
+		<a href="https://chromewebstore.google.com/detail/cors-unblock/lfhmikememgdcahcdlaciloancbhjino">CORS Unblock</a>
+		for this page to work.
 	</div>
 
 	<input type="text" id="yt-id-or-url" class="tt-clickable" placeholder="youtube video id/link"
 		onkeypress="if (event.key === 'Enter') getInfo()">
-	
+
 	<div id="loading" class="tt-subtle" hidden>loading...</div>
 
 	<div id="everything-else" class="tt-vert">

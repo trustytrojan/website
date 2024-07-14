@@ -2,10 +2,8 @@ import { createElement } from '../utils/elements.js';
 import * as els from './dl-fw-elements.js';
 import ffmpegDl from './ffmpeg-dl.js';
 import { max } from '../utils/arrays.js';
-//import * as ytdl from '../ytdl-core/lib/info.js';
-import * as ytdl from 'https://cdn.trustytrojan.dev/ytdl-core-browser/lib/info.js';
+import * as ytdl from '../ytdl-core/lib/info.js';
 
-// let baseHref;
 let formats, details;
 
 /**
@@ -145,8 +143,6 @@ const createTableRow = (
 	]);
 	return el;
 };
-
-// const baseUrl = 'https://api.trustytrojan.dev';
 
 export const getInfo = async () => {
 	const idOrUrl = els.ytIdOrUrl.value;
