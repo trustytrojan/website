@@ -3,100 +3,35 @@ import * as els from './dl-fw-elements.js';
 import ffmpegDl from './ffmpeg-dl.js';
 import { max } from '../utils/arrays.js';
 import * as ytdl from '../ytdl-core/lib/info.js';
+import { secondsToHms, threeDigitAbbreviation, extendFormat, selectedFormat, itagFromId } from './shared.js';
 
 let formats, details;
-
-/**
- * @param {string | number} seconds 
- */
-const secondsToHms = (seconds) => {
-	if (seconds < 0)
-		throw TypeError('seconds must be nonnegative');
-	const h = Math.floor(seconds / 3600);
-	const m = Math.floor((seconds % 3600) / 60);
-	const s = seconds % 60;
-	const pad = (x) => String(x).padStart(2, '0');
-	return (h > 0)
-		? `${h}:${pad(m)}:${pad(s)}`
-		: `${m}:${pad(s)}`;
-};
-
-/**
- * @param {string | number} n 
- */
-const threeDigitAbbreviation = (n) => {
-	const abbreviations = ['', 'K', 'M', 'B', 'T'];
-	const suffixIndex = Math.floor(Math.log10(n) / 3);
-	const abbreviatedNumber = (n / Math.pow(1000, suffixIndex)).toFixed(0);
-	return abbreviatedNumber + abbreviations[suffixIndex];
-};
-
-const extendFormat = (format) => {
-	const bitrateKbps = format.hasVideo
-		? Math.round((format.averageBitrate || format.bitrate) / 1000)
-		: format.audioBitrate;
-	format.bitrateKbpsText = `${bitrateKbps}kbps`;
-	format.type = (format.hasVideo && format.hasAudio)
-		? 'av'
-		: (format.hasVideo ? 'video' : 'audio');
-};
-
-/** @type {Record<string, HTMLDivElement?>} */
-const selectedFormat = Object.preventExtensions({ audio: null, video: null, av: null });
-
-/**
- * @param {HTMLElement} 
- */
-const itagFromId = ({ id }) => {
-	const split = id.split('-');
-	return split[split.length - 1];
-};
 
 const clearFfmpegOutput = () => {
 	els.ffmpegOutput.hidden = false;
 	els.ffmpegOutputCode.innerText = '';
 };
 
-const onLog = ({ message }) => els.ffmpegOutputCode.innerHTML += (message + '\n');
+const printFfmpegOutput = (line) => els.ffmpegOutputCode.innerHTML += (line + '\n');
 
 const updateDlButton = () => {
 	const { audio, video, av } = selectedFormat;
-	els.dlButton.disabled = false;
-	if (av)
-		els.dlButton.onclick = () => {
-			clearFfmpegOutput();
-			const itag = itagFromId(av);
-			ffmpegDl(formats.filter(f => f.itag == itag), details, onLog);
-		};
-	else if (audio || video) {
-		if (audio && video)
-			els.dlButton.onclick = () => {
-				clearFfmpegOutput();
-				const audioItag = itagFromId(audio);
-				const videoItag = itagFromId(video);
-				console.log(audio);
-				console.log(video);
-				console.log(audioItag);
-				console.log(videoItag);
-				console.log(formats);
-				ffmpegDl(formats.filter(f => f.itag == audioItag || f.itag == videoItag), details, onLog);
-			};
-		else {
-			if (audio)
-				els.dlButton.onclick = () => {
-					clearFfmpegOutput();
-					const audioItag = itagFromId(audio);
-					ffmpegDl(formats.filter(f => f.itag == audioItag), details, onLog);
-				};
-			if (video)
-				els.dlButton.onclick = () => {
-					clearFfmpegOutput();
-					const videoItag = itagFromId(video);
-					ffmpegDl(formats.filter(f => f.itag == videoItag), details, onLog);
-				};
-		}
-	} else
-		els.dlButton.disabled = true;
+
+	if (els.dlButton.disabled = (!av && !audio && !video))
+		return;
+
+	els.dlButton.onclick = () => {
+		clearFfmpegOutput();
+		let _formats;
+		// need to use == instead of === because the format itags are numbers and not strings
+		if (av)
+			_formats = formats.filter(f => f.itag == itagFromId(av));
+		else if (audio && video)
+			_formats = formats.filter(f => f.itag == itagFromId(audio) || f.itag == itagFromId(video));
+		else
+			_formats = formats.filter(f => f.itag == itagFromId(audio ?? video));
+		ffmpegDl(_formats, details, printFfmpegOutput);
+	};
 };
 
 const createTableRow = (
@@ -179,17 +114,17 @@ export const getInfo = async () => {
 
 	els.hqBtn.onclick = () => {
 		clearFfmpegOutput();
-		ffmpegDl([hqa, hqv], details, onLog);
+		ffmpegDl([hqa, hqv], details, printFfmpegOutput);
 	};
 
 	els.hqaBtn.onclick = () => {
 		clearFfmpegOutput();
-		ffmpegDl([hqa], details, onLog);
+		ffmpegDl([hqa], details, printFfmpegOutput);
 	};
 
 	els.hqvBtn.onclick = () => {
 		clearFfmpegOutput();
-		ffmpegDl([hqv], details, onLog);
+		ffmpegDl([hqv], details, printFfmpegOutput);
 	};
 
 	els.everythingElse.style.display = 'flex';

@@ -7,7 +7,7 @@ const displaySearchResults = (results) => {
 		searchResults.append(
 			createElement('div', {
 				className: 'search-result tt-border',
-				href: `https://youtu.be/${id}`
+				// href: `https://youtu.be/${id}`
 			}, [
 				createElement('img', {
 					src: thumbnails ? thumbnails[0].url : null,

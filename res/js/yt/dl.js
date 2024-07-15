@@ -1,53 +1,8 @@
 import { createElement } from '../utils/elements.js';
 import * as els from './dl-elements.js';
+import { secondsToHms, threeDigitAbbreviation, extendFormat, selectedFormat, itagFromId } from './shared.js';
 
 let baseHref;
-
-/**
- * @param {string | number} seconds 
- */
-const secondsToHms = (seconds) => {
-	if (seconds < 0)
-		throw TypeError('seconds must be nonnegative');
-	const h = Math.floor(seconds / 3600);
-	const m = Math.floor((seconds % 3600) / 60);
-	const s = seconds % 60;
-	const pad = (x) => String(x).padStart(2, '0');
-	return (h > 0)
-		? `${h}:${pad(m)}:${pad(s)}`
-		: `${m}:${pad(s)}`;
-};
-
-/**
- * @param {string | number} n 
- */
-const threeDigitAbbreviation = (n) => {
-	const abbreviations = ['', 'K', 'M', 'B', 'T'];
-	const suffixIndex = Math.floor(Math.log10(n) / 3);
-	const abbreviatedNumber = (n / Math.pow(1000, suffixIndex)).toFixed(0);
-	return abbreviatedNumber + abbreviations[suffixIndex];
-};
-
-const extendFormat = (format) => {
-	const bitrateKbps = format.hasVideo
-		? Math.round((format.averageBitrate || format.bitrate) / 1000)
-		: format.audioBitrate;
-	format.bitrateKbpsText = `${bitrateKbps}kbps`;
-	format.type = (format.hasVideo && format.hasAudio)
-		? 'av'
-		: (format.hasVideo ? 'video' : 'audio');
-};
-
-/** @type {Record<string, HTMLDivElement?>} */
-const selectedFormat = Object.preventExtensions({ audio: null, video: null, av: null });
-
-/**
- * @param {HTMLElement} 
- */
-const itagFromId = ({ id }) => {
-	const split = id.split('-');
-	return split[split.length - 1];
-};
 
 const updateDlButtonHref = () => {
 	const { audio, video, av } = selectedFormat;
@@ -71,7 +26,7 @@ const createTableRow = (
 	{ itag, type, codecs, hasVideo, bitrateKbpsText, qualityLabel, audioQuality, url },
 	{ videoId }
 ) => {
-	const el = createElement('tr', {
+	const tr = createElement('tr', {
 		id: `${videoId}-${itag}`,
 
 		// easiest way to catch right-clicks
@@ -84,9 +39,9 @@ const createTableRow = (
 			// get references to currently selected formats
 			let { audio, video, av } = selectedFormat;
 
-			if (selectedFormat[type] === el) {
+			if (selectedFormat[type] === tr) {
 				// if this format is already selected, de-select it
-				el.classList.remove('selected-format');
+				tr.classList.remove('selected-format');
 				selectedFormat[type] = null;
 			} else {
 				// keep mutual exclusivity
@@ -101,9 +56,9 @@ const createTableRow = (
 				}
 
 				// select self, deselect other
-				el.classList.add('selected-format');
+				tr.classList.add('selected-format');
 				selectedFormat[type]?.classList.remove('selected-format');
-				selectedFormat[type] = el;
+				selectedFormat[type] = tr;
 			}
 
 			updateDlButtonHref();
@@ -114,7 +69,7 @@ const createTableRow = (
 		createElement('td', { innerText: (type === 'av') ? codecs.replace(', ', '\n') : codecs }),
 		createElement('td', { innerText: bitrateKbpsText })
 	]);
-	return el;
+	return tr;
 };
 
 const baseUrl = 'https://api.trustytrojan.dev';
