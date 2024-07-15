@@ -1,13 +1,11 @@
 import { createElement } from '../utils/elements.js';
-import { searchResults, srLoading, ytSearchQuery } from './search-elements.js';
-import * as yts from '../youtube-search-api.js';
+import * as els from './search-elements.js';
 
 const displaySearchResults = (results) => {
 	for (const { title, channel, lengthText, thumbnails, id, live, viewsText } of results)
-		searchResults.append(
+		els.searchResultsDiv.append(
 			createElement('div', {
 				className: 'search-result tt-border',
-				// href: `https://youtu.be/${id}`
 			}, [
 				createElement('img', {
 					src: thumbnails ? thumbnails[0].url : null,
@@ -33,19 +31,28 @@ const displaySearchResults = (results) => {
 		);
 };
 
+const baseUrl = 'https://api.trustytrojan.dev/yt';
 let nextPageCtx;
 
 export const search = async () => {
-	srLoading.hidden = false;
-	searchResults.replaceChildren();
-	const { results, nextPageCtx: npCtx } = await yts.search(ytSearchQuery.value, 'video');
-	nextPageCtx = npCtx;
+	els.loadingDiv.hidden = false;
+	els.searchResultsDiv.replaceChildren();
+	const url = `${baseUrl}/search/?q=${encodeURIComponent(els.ytSearchInput.value)}&type=video`;
+	let results;
+	({ results, nextPageCtx } = await (await fetch(url)).json());
 	displaySearchResults(results);
 	document.getElementById('sr-container').style.display = 'flex';
-	srLoading.hidden = true;
+	els.loadingDiv.hidden = true;
 };
 
 export const nextPage = async () => {
-	const results = await yts.nextPage(nextPageCtx);
+	const url = baseUrl + '/search/nextpage';
+	const init = {
+		method: 'POST',
+		body: JSON.stringify(nextPageCtx),
+		headers: { 'Content-Type': 'application/json' }
+	};
+	let results;
+	({ results, nextPageCtx } = await (await fetch(url, init)).json());
 	displaySearchResults(results);
 };

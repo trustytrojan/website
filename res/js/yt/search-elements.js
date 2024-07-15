@@ -1,8 +1,11 @@
 /** @type {HTMLDivElement} */
-export const searchResults = document.getElementById('search-results');
+export const searchResultsDiv = document.getElementById('search-results');
 
 /** @type {HTMLInputElement} */
-export const ytSearchQuery = document.getElementById('yt-search');
+export const ytSearchInput = document.getElementById('yt-search');
 
 /** @type {HTMLDivElement} */
-export const srLoading = document.getElementById('sr-loading');
+export const loadingDiv = document.getElementById('sr-loading');
+
+/** @type {HTMLButtonElement} */
+export const loadMoreBtn = document.getElementById('load-more');

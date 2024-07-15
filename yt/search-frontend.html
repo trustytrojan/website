@@ -8,21 +8,21 @@
 </head>
 
 <body class="tt-vert">
-	<h1 id="title"><a class="tt-home" href="/">trustytrojan.dev</a>/yt/search</h1>
+	<h1 id="title"><a class="tt-home" href="/">trustytrojan.dev</a>/yt/search-frontend</h1>
 
 	<input type="text" id="yt-search" class="tt-clickable" placeholder="search youtube"
 		onkeypress="if (event.key === 'Enter') search()">
 
-	<i id="sr-loading" hidden>loading...</i>
+	<i id="sr-loading" hidden></i>
 
 	<div id="sr-container" class="tt-vert" hidden>
 		<div id="search-results"></div>
-		<button onclick="nextPage()" class="tt-clickable">load more</button>
+		<button id="load-more" onclick="nextPage()" class="tt-clickable">load more</button>
 	</div>
 
 	<script type="module">
 		import { ytSearchInput } from '/res/js/yt/search-elements.js';
-		import { search, nextPage } from '/res/js/yt/search.js';
+		import { search, nextPage } from '/res/js/yt/search-frontend.js';
 		window.search = search;
 		window.nextPage = nextPage;
 

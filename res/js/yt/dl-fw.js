@@ -89,6 +89,7 @@ export const getInfo = async () => {
 	if (!idOrUrl.length) return;
 
 	els.loading.hidden = false;
+	els.loading.innerHTML = 'loading...';
 	els.everythingElse.style.display = 'none';
 	els.videoTb.replaceChildren();
 	els.audioTb.replaceChildren();
@@ -96,7 +97,12 @@ export const getInfo = async () => {
 		selectedFormat[k] = null;
 	updateDlButton();
 
-	({ formats, videoDetails: details } = await ytdl.getInfo(idOrUrl));
+	({ formats, videoDetails: details } = await ytdl.getInfo(idOrUrl)
+		.catch(err => {
+			if (err.message === 'Failed to fetch')
+				els.loading.innerHTML = 'cors error! you need an extension like <a href="https://chromewebstore.google.com/detail/cors-unblock/lfhmikememgdcahcdlaciloancbhjino">CORS Unblock</a> for this page to work.';
+		})
+	);
 
 	els.details.root.href = `https://youtu.be/${details.videoId}`;
 	els.details.thumbnail.src = details.thumbnails[0].url;
