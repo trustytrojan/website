@@ -1,3 +1,6 @@
 [submodule "res/js/ytdl-core"]
 	path = res/js/ytdl-core
 	url = https://github.com/trustytrojan/ytdl-core
+[submodule "res/js/yts"]
+	path = res/js/yts
+	url = https://github.com/trustytrojan/yt-search.js
