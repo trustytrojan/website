@@ -1,6 +1,6 @@
 import { createElement } from '../utils/elements.js';
 import * as els from './search-elements.js';
-import * as yts from '../yts.js';
+import * as yts from '../yts/yt-search.js';
 
 /**
  * @param {yts.VideoResult[]} results 
@@ -34,22 +34,26 @@ const displaySearchResults = (results) => {
 		);
 };
 
+/** @type {yts.NextPageContext} */
 let nextPageCtx;
 
 export const search = async () => {
 	els.loadingDiv.hidden = false;
 	els.loadingDiv.innerHTML = 'loading...';
 	els.searchResultsDiv.replaceChildren();
+
+	/** @type {yts.VideoResult[]} */
 	let results;
-	try {
-		({ results, nextPageCtx } = await yts.search(els.ytSearchInput.value, 'video'));
-	} catch (err) {
+
+	try { ({ results, nextPageCtx } = await yts.search(els.ytSearchInput.value, 'video')); }
+	catch (err) {
 		if (!(err instanceof Error))
 			throw err;
 		if (err.message === 'Failed to fetch')
 			els.loadingDiv.innerHTML = 'fetch error! make sure you have an extension like <a href="https://chromewebstore.google.com/detail/cors-unblock/lfhmikememgdcahcdlaciloancbhjino">CORS Unblock</a> installed.';
 		return;
 	}
+
 	displaySearchResults(results);
 	document.getElementById('sr-container').style.display = 'flex';
 	els.loadingDiv.hidden = true;
