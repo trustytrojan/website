@@ -1,6 +1,6 @@
 [submodule "public/res/js/ytdl-core"]
-	path = res/js/ytdl-core
-	url = https://github.com/trustytrojan/ytdl-core
+	path = public/res/js/ytdl-core
+	url = https://github.com/trustytrojan/ytdl-core-browser
 [submodule "public/res/js/yts"]
-	path = res/js/yts
+	path = public/res/js/yts
 	url = https://github.com/trustytrojan/yt-search.js
