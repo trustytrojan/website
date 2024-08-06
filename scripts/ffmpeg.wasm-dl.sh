@@ -1,8 +1,8 @@
-DEST_DIR=res/js/@ffmpeg
+DEST_DIR='public/res/js/@ffmpeg'
 
 dl() {
 	mkdir -p $DEST_DIR/$1
-	curl https://registry.npmjs.org/@ffmpeg/$1/-/$1-$2.tgz | tar -xzC $DEST_DIR/$1
+	curl "https://registry.npmjs.org/@ffmpeg/$1/-/$1-$2.tgz" | tar -xzC "$DEST_DIR/$1"
 }
 
 dl ffmpeg 0.12.10
