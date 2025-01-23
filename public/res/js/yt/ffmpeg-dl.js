@@ -1,6 +1,8 @@
 import { createElement } from '../utils/elements.js';
-import { FFmpeg } from '../@ffmpeg/ffmpeg/package/dist/esm/index.js';
-import { fetchFile } from '../@ffmpeg/util/package/dist/esm/index.js';
+// import { FFmpeg } from '../@ffmpeg/ffmpeg/package/dist/esm/index.js';
+import { FFmpeg } from 'https://unpkg.com/@ffmpeg/ffmpeg@0.12.15/dist/esm/index.js';
+// import { fetchFile } from '../@ffmpeg/util/package/dist/esm/index.js';
+import { fetchFile } from 'https://unpkg.com/@ffmpeg/util@0.12.2/dist/esm/index.js';
 
 const ffmpeg = new FFmpeg;
 

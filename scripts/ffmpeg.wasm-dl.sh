@@ -1,3 +1,6 @@
+# you only need to use this for easier development
+# having the code locally provides vscode intellisense
+
 DEST_DIR='public/res/js/@ffmpeg'
 
 dl() {
