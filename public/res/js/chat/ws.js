@@ -1,6 +1,5 @@
 import { createElement } from '../utils/elements.js';
-import { hideInteractiveElements, appendJoinMessage, appendLeaveMessage, appendUserMessage, typingLabel, typingUsernames, errorLabel,
-	usernameLabel, startDialog } from './elements.js';
+import * as els from './elements.js';
 
 const // object types for the JSON objects going through the WebSocket
 	USER_JOIN = 0,
@@ -15,7 +14,7 @@ let username;
 
 const ws = new WebSocket('wss://chat.trustytrojan.dev');
 
-ws.onopen = startDialog.showModal.bind(startDialog);
+ws.onopen = els.startDialog.showModal.bind(els.startDialog);
 
 ws.onmessage = ({ data }) => {
 	const obj = JSON.parse(data.toString());
@@ -23,16 +22,16 @@ ws.onmessage = ({ data }) => {
 	switch (obj.type) {
 		case USER_JOIN:
 			if (obj.username === username) {
-				startDialog.close();
-				startDialog.style.display = 'none';
-				usernameLabel.hidden = false;
-				usernameLabel.innerHTML = `Your username: <b>${username}</b>`;
+				els.startDialog.close();
+				els.startDialog.style.display = 'none';
+				els.usernameLabel.hidden = false;
+				els.usernameLabel.innerHTML = `Your username: <b>${username}</b>`;
 			}
-			appendJoinMessage(obj);
+			els.appendJoinMessage(obj);
 			break;
 
 		case USER_MESSAGE:
-			appendUserMessage(obj);
+			els.appendUserMessage(obj);
 			// if this user sent this message
 			if (obj.sender === username)
 				// move it into view no matter where their scroll is
@@ -40,19 +39,19 @@ ws.onmessage = ({ data }) => {
 			break;
 
 		case USER_LEAVE:
-			appendLeaveMessage(obj);
+			els.appendLeaveMessage(obj);
 			if (obj.username === username) {
 				ws.close(1000, 'left the chat');
-				hideInteractiveElements();
-				usernameLabel.hidden = true;
+				els.hideInteractiveElements();
+				els.usernameLabel.hidden = true;
 				document.body.appendChild(createElement('b', { innerHTML: 'You have left the chat.' }));
 			}
 			break;
 
 		case USER_TYPING:
 			if (obj.username === username) break;
-			typingLabel.show();
-			typingUsernames.appendChild(createElement('b', {
+			els.typingLabel.show();
+			els.typingUsernames.appendChild(createElement('b', {
 				id: `typing-${obj.username}`,
 				innerHTML: obj.username,
 				className: 'typing-username'
@@ -62,21 +61,21 @@ ws.onmessage = ({ data }) => {
 		case USER_STOPPED_TYPING:
 			const typingUsernameLabel = document.getElementById(`typing-${obj.username}`);
 			if (typingUsernameLabel)
-				typingUsernames.removeChild(typingUsernameLabel);
-			if (typingUsernames.children.length == 0)
-				typingLabel.hide();
+				els.typingUsernames.removeChild(typingUsernameLabel);
+			if (els.typingUsernames.children.length == 0)
+				els.typingLabel.hide();
 			break;
 
 		case ERR_USERNAME_TAKEN:
-			errorLabel.textContent = 'Error: username already taken!';
+			els.errorLabel.textContent = 'Error: username already taken!';
 			break;
 	}
 };
 
-ws.onerror = (ev) => { if (ev.type === 'error') errorLabel.textContent = 'Error connecting to chat server!'; };
+ws.onerror = (ev) => { if (ev.type === 'error') els.errorLabel.textContent = 'Error connecting to chat server!'; };
 
 ws.onclose = () => {
-	hideInteractiveElements();
+	els.hideInteractiveElements();
 	document.body.appendChild(createElement('b', { innerHTML: 'You were disconnected from the server.' }));
 };
 
