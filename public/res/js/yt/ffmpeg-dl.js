@@ -1,24 +1,21 @@
 import { createElement } from '../utils/elements.js';
-// import { FFmpeg } from '../@ffmpeg/ffmpeg/package/dist/esm/index.js';
-import { FFmpeg } from 'https://unpkg.com/@ffmpeg/ffmpeg@0.12.15/dist/esm/index.js';
-// import { fetchFile } from '../@ffmpeg/util/package/dist/esm/index.js';
-import { fetchFile } from 'https://unpkg.com/@ffmpeg/util@0.12.2/dist/esm/index.js';
+import { downloadWithProgress } from '../@ffmpeg/util/package/dist/esm/index.js';
 
-const ffmpeg = new FFmpeg;
+const ffmpeg = new (await import('../@ffmpeg/ffmpeg/package/dist/esm/index.js')).FFmpeg;
 
 export default async (formats, details, logFunc) => {
 	ffmpeg.on('log', ({ message }) => logFunc(message));
 
 	if (!ffmpeg.loaded)
-		await ffmpeg.load({ coreURL: '/res/js/@ffmpeg/core-mt/package/dist/esm/ffmpeg-core.js' });
+		await ffmpeg.load();
 
 	const onlyOneAudio = (formats.length === 1) && (formats[0].type === 'audio');
 	const urls = formats.map(f => f.url);
 
 	let promises = [];
-	promises.push(fetchFile(urls[0]).then(f => ffmpeg.writeFile('f1', f)));
-	if (urls[1])
-		promises.push(fetchFile(urls[1]).then(f => ffmpeg.writeFile('f2', f)));
+	promises.push(downloadWithProgress(urls[0], console.log).then(f => ffmpeg.writeFile('f1', f)));
+	urls[1] &&
+		promises.push(downloadWithProgress(urls[1], console.log).then(f => ffmpeg.writeFile('f2', f)));
 	logFunc('Downloading media...');
 	await Promise.all(promises);
 
